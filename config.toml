@@ -2,6 +2,7 @@ baseURL = "http://philipdaniels.com/"
 languageCode = "en-us"
 title = "Phil's Blog"
 theme = "hyde-hyde"
+googleAnalytics = "UA-51573023-1"
 
 [params]
 # This lot is for the hyde-hyde theme to make it use highlight.js instead of Hugo's
