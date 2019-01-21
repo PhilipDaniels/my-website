@@ -1,0 +1,78 @@
+# vim: set filetype=gitconfig:
+ 
+[user]
+    name = Philip Daniels
+    email = Philip.Daniels1971@gmail.com
+[color]
+    ui = true
+[credential]
+    # Store passwords in RAM for 20 hours.
+    helper = cache --timeout=72000
+[core]
+    editor = vim
+    pager = less -x4
+    # Do not do any conversion. Always keep whatever the file was entered with.
+    # This seems to be best for files that you need to use on different systems
+    # (Linux, MSysGit, Cygwin). It requires Windows machines to know
+    # about and preserve files with LF endings, which most modern tools do.
+    # See http://stackoverflow.com/questions/170961 and 13960696
+    # In practice THIS SHOULD BE IGNORED because you should create a
+    # .gitattributes file in every repo. See my question & answer at
+    # http://stackoverflow.com/questions/24577629/git-line-endings-after-normalization
+    autocrlf = false
+    # Stop git whining about CRLF/LF conversions on Windows.
+    safecrlf = false
+[push]
+    default = simple
+#[http]
+#    proxy = http://somewhere:1234/
+[alias]
+    s = status
+    ss = status --short
+    m = commit -m
+    amend = commit --amend --no-edit
+    a = add -A
+    b = branch -a -vv
+    # Do a git add followed by a git status. This is the syntax to define ashell function,
+    # which can be used to execute arbitrary commands.
+    as = "'!f() { git add .; git status; }; f'"
+    # Delete a branch locally and on the remote. See
+    # http://stackoverflow.com/questions/2003505/how-do-i-delete-a-git-branch-both-locally-and-remotely
+    rmbranch = "!f(){ git branch -d ${1} && git push origin --delete ${1}; };f"
+
+    # The color names correspond to those in the palette. (Idx = logical color
+    # name). Note that the actual color may be nothing like "red" or "green",
+    # it depends on the terminal palette.
+    #     0 = black, 1 = red, 2 = green, 3 = yellow,
+    #     4 = blue,  5 = magenta, 6 = cyan, 7 = white
+    # Prefixing with bold adds 8 to all the colour indexes (i.e. now 8..15)
+    # and selects the "bright" aka "bold" variants. There is also the "normal"
+    # colour which is whatever the foreground is. You may also use the
+    # modifiers bold, dim, ul, blink and reverse. If two colours are given the
+    # first is the foreground and the second is the background.
+    lg = log --graph --abbrev-commit --pretty=format:'%C(yellow)%h%C(bold red) %ci%x08%x08%x08%x08%x08%x08%x08%x08%x08 %C(reset)%s %C(blue)%an'
+    lg2 = log --graph --abbrev-commit --date=short --pretty=format:'%C(yellow)%h%C(bold red) %cd %C(reset)%s %C(blue)%an'
+    l = log -15 --graph --abbrev-commit --pretty=format:'%C(yellow)%h%C(bold red) %ci%x08%x08%x08%x08%x08%x08%x08%x08%x08 %C(reset)%s %C(blue)%an'
+
+    # An example of how to setup aliases for git subtree pull and push commands.
+    # See my answer at http://stackoverflow.com/questions/24038147/managing-third-party-assets/
+    # mupull = subtree pull --prefix MiscUtils --squash git@github.com:PhilipDaniels/MiscUtils.git master
+    # mupush = subtree push --prefix MiscUtils git@github.com:PhilipDaniels/MiscUtils.git master
+
+# Setup the GUI diff and mergetools to use p4merge. p4merge is free for Linux
+# and Windows. It needs to be on your path, or you can edit the 'cmd' lines.
+[merge]
+    tool = p4merge
+[mergetool "p4merge"]
+    cmd = "p4merge $BASE $LOCAL $REMOTE $MERGED"
+    keepTemporaries = false
+    trustExitCode = false
+    keepBackup = false
+[diff]
+    guitool = p4merge
+    tool = p4merge
+[difftool]
+    prompt = false
+[difftool "p4merge"]
+    cmd = "p4merge $LOCAL $REMOTE"
+

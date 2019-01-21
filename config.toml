@@ -1,0 +1,19 @@
+baseURL = "http://philipdaniels.com/"
+languageCode = "en-us"
+title = "Phil's Blog"
+theme = "hyde-hyde"
+
+[params]
+# This lot is for the hyde-hyde theme to make it use highlight.js instead of Hugo's
+# built-in syntax highlighting (which is shit, wraps lines when it shouldn't).
+# Get styles from https://highlightjs.org/static/demo/   Some nice ones:
+# "darcula", "gruvbox-dark", "monokai","obsidian","pojoaque","rainbow","routeros",
+# "railscasts","school-book","solarized-light","sunburst","tomorrow-night-bright"
+# "tomorrow-night-eighties", "vs"
+#
+# https://highlightjs.readthedocs.io/en/latest/css-classes-reference.html#language-names-and-aliases
+highlightjs = true
+highlightjsstyle="gruvbox-dark"
+highlightjslanguages = ["rust", "cs", "bash", "python", "css", "http", "ini", "javascript", "json",
+"markdown", "sql", "html", "xml", "dockerfile", "scss", "r", "typescript", "go", "cpp", "dos",
+"plaintext", "powershell", "diff", "makefile"]

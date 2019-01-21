@@ -1,0 +1,31 @@
+/* The background color for the whole page */
+body { background-color: #002b36; }
+
+/* The little "extras" menu at the top left */
+div.extras { background-color: #839496; }
+
+/* Links appear in the extras menu, the (more) text and the popup dialog */
+a { color: #00b7ff; }
+
+/* The foreground color for the informative text */
+div.info { color: #fdf6e3; }
+
+/* Define background colors for the cheatsheet sections */
+.cs0 { background-color: #1d6c6c }
+.cs1 { background-color: #2da7a7 }
+.cs2 { background-color: #38cece }
+.cs3 { background-color: #40ecec }
+.cs4 { background-color: #38cece }
+.cs5 { background-color: #2da7a7 }
+.cs6 { background-color: #1d6c6c }
+
+/* Styling of the SWILR boxes */
+.boxoff    { fill: #839496; }
+.boxon     { fill: #00b7ff; }
+.boxlabel  { font: 20px sans-serif; }
+.arrowline { fill: blue; }
+.arrowhead { stroke: blue; }
+
+/* The style of the heading in each cheatsheet section */
+div.section h2 { border-bottom: 1px solid black; }
+

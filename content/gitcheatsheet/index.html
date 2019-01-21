@@ -1,0 +1,749 @@
+﻿<!DOCTYPE html>
+<html class="no-js" lang="">
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Phil's Git Cheatsheet</title>
+    <meta name="description" content="A cheatsheet for Git, the version control system.">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="apple-touch-icon" href="apple-touch-icon.png">
+    <script src="./gitcheatsheet.js"></script>
+    <link rel="stylesheet" href="//netdna.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="./gitcheatsheet.min.css">
+    <link rel="stylesheet" href="./theme.solarized_dark.css" id="themeSheet">
+</head>
+<body>
+    <!--[if lt IE 8]>
+        <p class="browserupgrade">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
+    <![endif]-->
+	<div class="topBlock">
+    <div class="extras">
+        <a href="#inline_content" id="cboxLink">
+            <i class="fa fa-bars fa-3x"></i>
+        </a>
+    </div>
+    <div class="boxes">
+    <svg id="newBoxes" width="640px" height="100px" viewbox="0 0 640 100" zoomAndPan="disable" preserveAspectRatio="none" version="1.1">
+        <marker id="arrowhead" viewBox="0 0 10 10" refX="1" refY="5" orient="auto" markerUnits="strokeWidth" markerWidth="4" markerHeight="3">
+            <polyline points="0,0 10,5 0,10 1,5" class="arrowline" />
+        </marker>
+        <line id="theline" x1="460" y1="-60" x2="160" y2="-60" class="arrowhead" stroke-width="15" marker-start="url(#arrowhead)" marker-end="url(#arrowhead)" />
+    </svg>
+    </div>
+    <div class="info">
+        <h3 id="headingHint"></h3>
+        <span id="spanHint"></span>
+    </div>
+</div>
+
+<div class="cheatsheet">
+
+    <div class="section cs0">
+        <h2>Getting Started</h2>
+
+            <dl class="subsection">
+                <h3>Do this first!!!</h3>
+
+                    <dt data-what=",NG" data-hint="Every project should have a .gitattributes file that says how to deal with line endings, it will prevent huge amounts of grief caused by people not setting up their configuration correctly. By using a .gitattributes file that choice is made in the repository, not left up to each individual user. The example file linked here should be good enough in 99% of cases." data-url="examplegitattributes.txt">Setup .gitattributes correctly</dt>
+
+                    <dt data-what=",NG" data-hint="Configure your .gitignore for each repository. Example configs are available at https://github.com/github/gitignore but beware, the Visual Studio one is very aggressive, it will ignore &#39;bin&#39; folders within node_modules, for example. See my example at the (more) link, and also http://git-scm.com/docs/gitignore" data-url="examplegitignore.txt">Setup .gitignore correctly</dt>
+
+                    <dt data-what=",NG" data-hint="While you can use individual &#39;git config&#39; commands to set an examine your configuration, it is just as easy to edit the file in a text editor. As an absolute minimum, you should set user.name and user.email." data-url="examplegitconfig.txt">Setup ~/.gitconfig correctly</dt>
+
+                    <dt data-what="" data-hint="Unset a setting." data-url="http://git-scm.com/docs/git-config">config [--global] --unset user.email</dt>
+
+                    <dt data-what="" data-hint="Open the .gitconfig file in your chosen editor." data-url="http://git-scm.com/docs/git-config">config [--global] --edit</dt>
+
+                    <dt data-what="" data-hint="Set email address to appear in commits." data-url="http://git-scm.com/docs/git-config">config [--global] user.email Phil@foo.com</dt>
+
+                    <dt data-what="" data-hint="Display current settings" data-url="http://git-scm.com/docs/git-config">config --list</dt>
+
+            </dl>
+
+            <dl class="subsection">
+                <h3>Help</h3>
+
+                    <dt data-what="" data-hint="Display man page for verb, e.g. &#39;git commit --help&#39;." data-url="#">verb --help</dt>
+
+                    <dt data-what=",NG" data-hint="Display man page for verb." data-url="#">man git-verb</dt>
+
+            </dl>
+
+            <dl class="subsection">
+                <h3>Repository Creation and Cloning</h3>
+
+                    <dt data-what="L" data-hint="Create new repo (.git folder) in current directory. Does not add any files to start with, you need to use &#39;git add&#39;." data-url="http://git-scm.com/docs/git-init">init</dt>
+
+                    <dt data-what="RLWA" data-hint="Create local copy (in the mydir folder) of repo at url. Automatically sets up a remote called &#39;origin&#39; that links back to the source and creates local branches to track remote branches and checks out the active branch, populating your local workspace. The remote repository does not have to be on the net - a file system url of &quot;~/repos/mirabhasa&quot; will work just as well." data-url="http://git-scm.com/docs/git-clone">clone url [mydir]</dt>
+
+            </dl>
+
+            <dl class="subsection">
+                <h3>Using a Bare Repo as a Central Repo</h3>
+
+                    <dt data-what="L" data-hint="Initialise an empty bare repo in the current directory. The normal practice is to do this on a central server to which you have access, then clone it or connect an existing repo to it (one of 2a, 2b or 2c). You will probably have to widen permissions (chmod ugo+rw) on the files in the .git folder to enable other users to push to it. It is a convention that bare repos are named with a .git suffix." data-url="http://git-scm.com/docs/git-init">1a. init --bare newrepo.git</dt>
+
+                    <dt data-what="RLA" data-hint="As an alternative, you can clone an existing repo but do it in a bare form, which doesn&#39;t populate the workspace." data-url="http://git-scm.com/docs/git-clone">1b. clone --bare url</dt>
+
+                    <dt data-what="L" data-hint="In an existing local repository, add a new SSH remote called origin which connects to your bare repo. The path is relative to the home directory of &#39;&#39;user&#39;&#39;. The user is often &#39;&#39;git&#39;&#39;, which can be confusing: this is where &#39;&#39;git@github.com&#39;&#39; comes from. The syntax for HTTPS is https://server/user/project&#39;
+" data-url="http://git-scm.com/docs/git-remote">2a. remote add origin user@server:path/to/newrepo.git</dt>
+
+                    <dt data-what="L" data-hint="Change the remote url of an existing remote called &#39;origin&#39; so that it points to your new bare repo." data-url="http://git-scm.com/docs/git-remote">2b. remote set-url origin user@server:path/to/newrepo.git</dt>
+
+                    <dt data-what="RLWA" data-hint="Alternatively, just clone the bare repo (it will have no files) and start adding files locally, then just push when you are ready." data-url="http://git-scm.com/docs/git-clone">2c. clone user@server:path/to/newrepo.git</dt>
+
+                    <dt data-what="LRA" data-hint="Push all changes to remote called origin." data-url="http://git-scm.com/docs/git-push">3. push --all origin</dt>
+
+            </dl>
+
+            <dl class="subsection">
+                <h3>Graphical Tools</h3>
+
+                    <dt data-what="" data-hint="Start a graphical tool for making commits, branches etc. See also gitk, a graphical tool for browsing history." data-url="http://git-scm.com/docs/git-gui">gui</dt>
+
+                    <dt data-what="L,NG" data-hint="Display graphical repository browser. Accepts the same options as &#39;git log&#39;. The --all option makes it display the branching history for every branch, otherwise it just shows your current branch. Pass a file to look at the history of an individual file." data-url="http://git-scm.com/docs/gitk">gitk [--all] [file]</dt>
+
+                    <dt data-what="L" data-hint="Graphical blame." data-url="http://git-scm.com/docs/git-gui">gui blame filespec</dt>
+
+                    <dt data-what="LWA" data-hint="Run a merge tool such as Kdiff3 to resolve merge failures. This is only necessary if a merge fails. It is usually a good idea to tweak your mergetool, for example to automatically deal with whitespace issues." data-url="http://git-scm.com/docs/git-merge">mergetool</dt>
+
+                    <dt data-what="" data-hint="Run a graphical diff, which you must first have configured in .gitconfig. It accepts the same arguments as git-diff. Be careful not to diff binary files." data-url="http://git-scm.com/docs/git-difftool">difftool</dt>
+
+            </dl>
+
+            <dl class="subsection">
+                <h3>Other Docs</h3>
+
+                    <dt data-what=",NG" data-hint="The main page for git-scm.com." data-url="http://git-scm.com">Scott Chacon&#39;s site</dt>
+
+                    <dt data-what=",NG" data-hint="Andrew Peterson&#39;s cheat sheet." data-url="http://www.ndpsoftware.com/git-cheatsheet.html">Andrew Peterson&#39;s cheat sheet</dt>
+
+                    <dt data-what=",NG" data-hint="Justin Hileman&#39;s flowchart." data-url="http://justinhileman.info/article/git-pretty/">How to escape a git mess</dt>
+
+                    <dt data-what=",NG" data-hint="A couple of years old, but still a good starting point." data-url="http://stackoverflow.com/questions/315911/git-for-beginners-the-definitive-practical-guide">Stack Overflow git intro</dt>
+
+                    <dt data-what=",NG" data-hint="Can be used as an entry point to most of the official online documentation." data-url="https://www.kernel.org/pub/software/scm/git/docs/">Main git doc page at kernel.org.</dt>
+
+                    <dt data-what=",NG" data-hint="The blog post by Vincent Driessen. Contains a link to his PDF." data-url="http://nvie.com/posts/a-successful-git-branching-model/">Git Flow</dt>
+
+            </dl>
+
+    </div>
+
+    <div class="section cs1">
+        <h2>Daily Work</h2>
+
+            <dl class="subsection">
+                <h3>Staging</h3>
+
+                    <dt data-what="WIA" data-hint="Update the index using the current content of the workspace. Pathspec can be a file or directory (such as &#39;.&#39;), which will be added recursively. Adding a file to the index is also known as &#39;staging&#39; the file." data-url="http://git-scm.com/docs/git-add">add pathspec</dt>
+
+                    <dt data-what="WIA" data-hint="A synonym for &#39;--all&#39;. If you have removed files from your working tree you need to issue this command to have the removal added to the index. This will be the default in git v2.0." data-url="http://git-scm.com/docs/git-add">add -A pathspec</dt>
+
+                    <dt data-what="WIA" data-hint="Add interactively. Can be useful for picking subsets of files." data-url="http://git-scm.com/docs/git-add">add -i pathspec</dt>
+
+                    <dt data-what="WIA" data-hint="Rename oldfile to newfile. Usually unnecessary because git will detect renamed files automatically if their content has not changed greatly." data-url="http://git-scm.com/docs/git-mv">mv oldfile newfile</dt>
+
+            </dl>
+
+            <dl class="subsection">
+                <h3>Un-Staging</h3>
+
+                    <dt data-what="LIA" data-hint="Copy files from the repo to the index. If you allow sha to default to HEAD this action effectively removes them from the index because they will then match the repo. git status mentions this as a way of unstaging a file, though it&#39;s comment is slight overkill, you don&#39;t nead HEAD, &#39;git reset pathspec&#39; is sufficient. However &#39;git reset&#39; is actually more generic than that, since sha can be anything, but if you are doing that you probably actually need the next command, &#39;git checkout [sha]&#39;." data-url="http://git-scm.com/docs/git-reset">reset [sha] pathspec</dt>
+
+                    <dt data-what="LWA" data-hint="Copy files from the repo to the workspace. (See hint in &#39;&#39;git status&#39;&#39;). This is how to discard your workspace changes. sha defaults to HEAD, but you can specify an older commit: this is how to revert a file to a previous state." data-url="http://git-scm.com/docs/git-reset">checkout [sha] -- pathspec</dt>
+
+                    <dt data-what="I" data-hint="Remove file(s) from the index. The workspace is not touched at all. After this command git is no longer tracking the file. This is the command you will need if you accidentally committed a large binary file that you do not want to track." data-url="http://git-scm.com/docs/git-rm">rm --cached pathspec</dt>
+
+                    <dt data-what="WIA" data-hint="Remove file(s) from the workspace AND the index. This command can be used after a /bin/rm, i.e. when the file is already physically gone from your workspace. After this command, git is no longer tracking the file." data-url="http://git-scm.com/docs/git-rm">rm pathspec</dt>
+
+                    <dt data-what="WIA" data-hint="Glob patterns work. Escape &#39;*&#39; to stop the shell expanding it. See the example at the link for a discussion on the effects of quoting." data-url="http://git-scm.com/docs/git-rm">rm &#39;foo/*.log&#39;</dt>
+
+            </dl>
+
+            <dl class="subsection">
+                <h3>Committing</h3>
+
+                    <dt data-what="ILA" data-hint="Take the current contents of the index and commit it to the local repo. -m is used to specify a commit message. If omitted, the editor will open to allow you to enter the message. (A blank message aborts the commit). It is recommended that a commit message consist of 1 line (known as the title), then a blank line, then a longer description. See the discussion at the link." data-url="http://git-scm.com/docs/git-commit">commit [-m &quot;message&quot;]</dt>
+
+                    <dt data-what="WILA" data-hint="Add all currently tracked files that are changed or deleted to the index and commit. Untracked files are NOT added." data-url="http://git-scm.com/docs/git-commit">commit -a</dt>
+
+                    <dt data-what="ILA" data-hint="Revise last commit, for example if you missed some files or made a minor typo, specifying a new message. WARNING: If you have pushed the commit you are effectively rewriting history and subsequent pushes will fail with &#39;&#39;tip of your current branch is behind remote&#39;&#39;. Use &#39;&#39;push -f&#39;&#39; to force your changes up, but don&#39;&#39;t do this if you are in a team.
+" data-url="http://git-scm.com/docs/git-commit">commit --amend [-m &quot;message&quot;]</dt>
+
+                    <dt data-what="ILA" data-hint="Revise last commit, reusing the same message. See warning in previous cheat." data-url="http://git-scm.com/docs/git-commit">commit --amend --no-edit</dt>
+
+                    <dt data-what="WLA" data-hint="You can give git-commit a list of files; in this case a new commit is made that contains ONLY the mentioned files; the index is bypassed and is not modified at all. This is rarely used, but is a way to &#39;jump the queue&#39; without requiring a lot of index manipulation." data-url="http://git-scm.com/docs/git-commit">commit pathspecs</dt>
+
+            </dl>
+
+            <dl class="subsection">
+                <h3>Undoing</h3>
+
+                    <dt data-what="LWA" data-hint="An example of how to recover an old version of a file into a new filename. If you just want to replace in your workspace, you can do a &#39;git checkout&#39; instead." data-url="http://git-scm.com/docs/gitrevisions.html">show HEAD~4:File &gt; OldFile</dt>
+
+                    <dt data-what="L" data-hint="Set HEAD in the repo to sha. Do not modify the index or workspace. The result is that your staged and workspace changes are still available." data-url="http://git-scm.com/docs/git-reset">reset --soft sha</dt>
+
+                    <dt data-what="L" data-hint="Example of the previous: undo the last commit but leave all your changes in the workspace and the index." data-url="http://git-scm.com/docs/git-reset">reset --soft HEAD^</dt>
+
+                    <dt data-what="LIA" data-hint="Set HEAD in the repo to sha. Reset the index but leave the workspace alone. The result is that all your workspace WIP is still available, but needs staging. --mixed is the default." data-url="http://git-scm.com/docs/git-reset">reset [--mixed] sha</dt>
+
+                    <dt data-what="LIWA" data-hint="Set HEAD in the repo to sha. Reset the index and the workspace (WARNING: any changes to tracked files in the workspace since sha will be lost). Untracked files however, will be left alone." data-url="http://git-scm.com/docs/git-reset">reset --hard sha</dt>
+
+                    <dt data-what="LIWA" data-hint="Example of the previous: completely blow away the last commit." data-url="http://git-scm.com/docs/git-reset">reset --hard HEAD^</dt>
+
+                    <dt data-what="LIWA" data-hint="Example: abort a merge in progress." data-url="http://git-scm.com/docs/git-reset">reset --hard HEAD</dt>
+
+                    <dt data-what="LIWA" data-hint="Example: undo the last successful merge - after it has been committed! - AND all changes made since. Relies on the ORIG_HEAD pointer still being around." data-url="http://git-scm.com/docs/git-reset">reset --hard ORIG_HEAD</dt>
+
+            </dl>
+
+            <dl class="subsection">
+                <h3>Reverting</h3>
+
+                    <dt data-what="WILA" data-hint="Revert the changes that the shas introduced and record new commits to document this. Your workspace must be clean before beginning. n.b. git reset may be what you want, rather than revert (see Undoing, above). On the other hand, revert does provide a way to eliminate one or more commits from the MIDDLE of the history. A revert is the logical inverse of a cherry-pick." data-url="http://git-scm.com/docs/git-revert">revert [shas]</dt>
+
+                    <dt data-what="WILA" data-hint="Continue after resolving conflicts." data-url="http://git-scm.com/docs/git-revert">revert --continue</dt>
+
+                    <dt data-what="WILA" data-hint="Forget about the current operation in progress." data-url="http://git-scm.com/docs/git-revert">revert --quit</dt>
+
+                    <dt data-what="WILA" data-hint="Forget about the current operation in progress and return to the pre-sequence state." data-url="http://git-scm.com/docs/git-revert">revert --abort</dt>
+
+            </dl>
+
+            <dl class="subsection">
+                <h3>Cleaning</h3>
+
+                    <dt data-what="W" data-hint="Remove untracked files (also directories if -d) from the workspace. -f (force) is normally required to get it to run." data-url="http://git-scm.com/docs/git-clean">clean [-f] [-d]</dt>
+
+                    <dt data-what="W" data-hint="Clean interactively. Does not require -f." data-url="http://git-scm.com/docs/git-clean">clean -i</dt>
+
+                    <dt data-what="W" data-hint="Dry run. Does not require -f." data-url="http://git-scm.com/docs/git-clean">clean -n</dt>
+
+                    <dt data-what="W" data-hint="Also remove ignored files." data-url="http://git-scm.com/docs/git-clean">clean -x</dt>
+
+                    <dt data-what="L" data-hint="Removing files from the history: see the link." data-url="http://git-scm.com/en/Git-Tools-Rewriting-History">filter-branch</dt>
+
+            </dl>
+
+    </div>
+
+    <div class="section cs2">
+        <h2>Branching</h2>
+
+            <dl class="subsection">
+                <h3>Managing</h3>
+
+                    <dt data-what="L" data-hint="List branches, * means current. -r means show remote tracking branches only, -a means show all branches." data-url="http://git-scm.com/docs/git-branch">branch -r | -a</dt>
+
+                    <dt data-what="L" data-hint="List branches, -v means show hash and commit subject for each head and the relationship to the remote branch, e.g. &#39;behind 1&#39;. --vv is even nicer, for each tracking branch it shows the name of the remote branch beside it." data-url="http://git-scm.com/docs/git-branch">branch -v | -vv</dt>
+
+                    <dt data-what="L" data-hint="List branches that have been merged into current. Branches without * can be deleted." data-url="http://git-scm.com/docs/git-branch">branch -merged</dt>
+
+                    <dt data-what="L" data-hint="List branches that have not been merged into current." data-url="http://git-scm.com/docs/git-branch">branch -no-merged</dt>
+
+                    <dt data-what="L" data-hint="Create a new branch. sha allows you to specify the starting point of the branch and defaults to HEAD. This command is not often used, it is easier to do &#39;git checkout -b newbrname&#39; which creates a new branch and immediately switches to it." data-url="http://git-scm.com/docs/git-branch">branch newbrname [sha]</dt>
+
+                    <dt data-what="RLA" data-hint="Create a new local branch called &#39;newbr&#39; to track the branch &#39;brname&#39; on the remote called &#39;short&#39; (which will often be &#39;origin&#39;)." data-url="http://git-scm.com/docs/git-branch">branch --track newbr short/brname</dt>
+
+                    <dt data-what="L" data-hint="Delete a branch. Normally the branch must be fully merged, but you can use -D to force the delete." data-url="http://git-scm.com/docs/git-branch">branch -d brname</dt>
+
+                    <dt data-what="L" data-hint="Show which commits are in which branches. Defaults to local branches, -r means remote branches and -a means all branches. The first section lists each branch (* is current), most recent commit and assigns it a column. The second section shows which commits are in which branch: + means it&#39;s in, * means it&#39;s in and this is the active branch, - means it&#39;s in and is a merge commit. Try &#39;gitk --all&#39; for a graphical alternative. brnames can include wildcards, for example &#39;bug/*&#39;." data-url="http://git-scm.com/docs/git-show-branch">show-branch [-r] [-a] [brnames]</dt>
+
+                    <dt data-what="LRA" data-hint="Push brname to the remote repo (creating it if necessary) and (-u) create a local tracking branch so that in future you can just do &#39;git push&#39;." data-url="http://git-scm.com/docs/git-push">push -u shortname brname</dt>
+
+            </dl>
+
+            <dl class="subsection">
+                <h3>Switching To</h3>
+
+                    <dt data-what="LWA" data-hint="Checkout a branch. Your workspace will have files added and removed so that it reflects the state of brname. Your index will NOT be affected (in other words, there is only one index, it is not per-branch). If your workspace has file differences between the current and new branch then the checkout will fail (this is to stop you losing work). Use -f to force it and throw away current changes. -m will merge your workspace changes into into brname and leave you on brname (YOU MUST RESOLVE THE MERGE INDICATORS IN THE FILE(S))." data-url="http://git-scm.com/docs/git-checkout">checkout [-f | -m] brname</dt>
+
+                    <dt data-what="LWA" data-hint="Create a new branch then check it out. sha allows you to specify the start point of the new branch, and defaults to HEAD, in which case because this is a new branch your workspace will not be affected. Therefore, this is a way of storing WIP on a new branch." data-url="http://git-scm.com/docs/git-checkout">checkout -b newbrname [sha]</dt>
+
+                    <dt data-what="RLWA" data-hint="Create a new local branch (with the same name) to track a remote branch, then switch to it." data-url="http://git-scm.com/docs/git-checkout">checkout --track shortname/brname</dt>
+
+                    <dt data-what="RLWA" data-hint="Create a new local branch (with a new name) to track a remote branch, then switch to it." data-url="http://git-scm.com/docs/git-checkout">checkout -b newname shortname/brname</dt>
+
+            </dl>
+
+            <dl class="subsection">
+                <h3>Merging and Rebasing</h3>
+
+                    <dt data-what="LWA" data-hint="Merge sourcebr into the current branch. The changes in sourcebr since it diverged from the current branch will be replayed on top of current and then committed (or left in the workspace if you specify --no-commit). Merges can fail if there are conflicting changes to a file, in which case the commit object is not created and you should run &#39;git mergetool&#39; to resolve the differences. WARNING: Before starting a merge you should commit or stash all workspace changes, because it is difficult to back out if there is a merge failure. The --no-commit option is handy if you want to review the results of a successful merge before committing it." data-url="http://git-scm.com/docs/git-merge">merge [--no-commit] sourcebr</dt>
+
+                    <dt data-what="LWA" data-hint="Run a merge tool such as Kdiff3 to resolve merge failures. This is only necessary if a merge fails. It is usually a good idea to tweak your mergetool, for example to automatically deal with whitespace issues." data-url="http://git-scm.com/docs/git-merge">mergetool</dt>
+
+                    <dt data-what="W,NG" data-hint="You do not need to run a tool to resolve merge differences. You can just edit the conflicted files, &#39;git add&#39; them, then &#39;git commit&#39; to complete the process. Be careful to remove any temp files that git leaves around, it is easy to accidentally stage them." data-url="http://git-scm.com/docs/git-merge">manual resolution</dt>
+
+                    <dt data-what="LWA" data-hint="Abort the current conflict resolution process, and try to reconstruct the pre-merge state. This might not work unless you committted or stashed everything first." data-url="http://git-scm.com/docs/git-merge">merge --abort</dt>
+
+                    <dt data-what="LWA" data-hint="Rebase first saves all the commits in the current branch that are not in brname to a temporary area, then checks out brname and reapplies the commits after the HEAD of brname. The result is that N commits are moved from one place in the graph to another. --onto allows you to specify an alternative commit (i.e. not HEAD) to apply the rebased commits to. This form is rarely used, but the -i form is often used in feature branches for commit squashing. WARNING: Do not rebase commits that have been pushed. CAVEAT: Rebasing makes git bisect less useful." data-url="http://git-scm.com/docs/git-rebase">rebase [--onto newbase] brname</dt>
+
+                    <dt data-what="LWA" data-hint="Interactive rebase. Opens an editor which allows you to specify how to treat each commit in the rebase. This is often used to tidy history when using feature or bug branches: leaving the line 1 commit as PICK and setting the others to S - SQUASH results in 1 big commit in the history rather than N. WARNING: Do not rebase commits that have been pushed. CAVEAT: Rebasing makes git bisect less useful." data-url="http://git-scm.com/docs/git-rebase">rebase -i brname</dt>
+
+                    <dt data-what="LWA" data-hint="If a rebase fails with merge conflicts, you can resolve them (using git mergetool or a manual process) then issue this command to continue with the rebase." data-url="http://git-scm.com/docs/git-rebase">rebase --continue</dt>
+
+                    <dt data-what="LWA" data-hint="If a rebase fails with merge conflicts you can issue this command to abort the rebase." data-url="http://git-scm.com/docs/git-rebase">rebase --abort</dt>
+
+                    <dt data-what="LWA" data-hint="VALID DURING A MERGE CONFLICT ONLY. Checkout &#39;our&#39; version or &#39;their&#39; version of a file, hence resolving the conflict. &#39;Ours&#39; is defined as the branch you are on, &#39;theirs&#39; is the version from the branch that you are merging in. Obviously, this throws away the changes from one side." data-url="http://git-scm.com/docs/git-checkout">checkout --ours | --theirs</dt>
+
+                    <dt data-what="LWA" data-hint="Take a single commit and apply it in your current branch. A new commit is created at the tip of your branch that contains the state of the original sha. This is another way of copying work from one branch to another and is essentially a &#39;merge of one commit&#39;. Like a full merge, there can be conflicts which will require resolution." data-url="http://git-scm.com/docs/git-cherry-pick">cherry-pick sha</dt>
+
+                    <dt data-what="L" data-hint="Find the most recent common ancestor of the specified commits. In the simple case of two diverged branches it will be the point of divergence, but in more complicated cases such as cross-cutting history it can be non-obvious what will be returned. See examples at link." data-url="http://git-scm.com/docs/git-merge-base">merge-base sha1 sha2...</dt>
+
+            </dl>
+
+            <dl class="subsection">
+                <h3>Branch/Rebase/Fast-Forward Workflow</h3>
+
+                    <dt data-what="LWA" data-hint="Checkout the branch that we want to use as the starting point for our new work." data-url="http://git-scm.com/docs/git-checkout">1. checkout master</dt>
+
+                    <dt data-what="RLWA" data-hint="Ensure we have the latest changes from other people." data-url="http://git-scm.com/docs/git-pull">2. pull</dt>
+
+                    <dt data-what="L" data-hint="Create a new branch to work on new stuff. DO NOT PUSH THIS BRANCH unless other people will need to work on it. If you push the branch you won&#39;t be able to delete it at the end, though you can still rebase commits on the branch as long as they have not been pushed." data-url="http://git-scm.com/docs/git-checkout">3. checkout -b f-myfeature</dt>
+
+                    <dt data-what="WILA,NG" data-hint="Make as many commits as you like." data-url="#">4. work on your feature</dt>
+
+                    <dt data-what="RLA" data-hint="Get the latest changes from other people into your local repo." data-url="http://git-scm.com/docs/git-fetch">5. fetch origin (when done)</dt>
+
+                    <dt data-what="WL" data-hint="Show the differences between your workspace and the latest changes from others. This can be useful during merging/rebasing." data-url="http://git-scm.com/docs/git-diff">6. diff origin/master (Optional)</dt>
+
+                    <dt data-what="L" data-hint="(Assuming you branched from &#39;master&#39;). The first commit is first in the list, the last commit is at the bottom. Setting the first to PICK and the others to SQUASH squashes the commit history of the feature branch down to a single commit. This results in a neater history, but makes &#39;git bisect&#39; less useful. Alternatively, you can leave several key commits in the history by setting PICK and SQUASH appropriately. Use &#39;git mergetool&#39; to resolve any merge conflicts." data-url="http://git-scm.com/docs/git-rebase">7. rebase -i origin/master</dt>
+
+                    <dt data-what="LWA" data-hint="Switch to the branch we started from." data-url="http://git-scm.com/docs/git-checkout">8. checkout master</dt>
+
+                    <dt data-what="RLWA" data-hint="Updates your workspace (on &#39;master&#39;) with the latest changes from other people." data-url="http://git-scm.com/docs/git-pull">9. pull</dt>
+
+                    <dt data-what="LWA" data-hint="Merge f-myfeature, which is now a single commit, onto the top of master. Because you already rebased relative to the HEAD of master this should be a fast-forward merge, i.e. no extra merge commit object will be created. If you do want to create an explicit merge object (say, the feature is public and persistent) then use the --no-ff option." data-url="http://git-scm.com/docs/git-merge">10. merge [--no-ff] f-myfeature</dt>
+
+                    <dt data-what="L" data-hint="Delete the feature branch, since we no longer need it. You can only do this if you never pushed the branch, which is the normal situation with this workflow." data-url="http://git-scm.com/docs/git-branch">11. branch -d f-myfeature</dt>
+
+                    <dt data-what="LRA" data-hint="Publish your feature to the remote." data-url="http://git-scm.com/docs/git-push">12. push</dt>
+
+            </dl>
+
+    </div>
+
+    <div class="section cs3">
+        <h2>Git Flow</h2>
+
+            <dl class="subsection">
+                <h3>Introduction</h3>
+
+                    <dt data-what=",NG" data-hint="We consider origin/master to be the main branch where the source code of HEAD always reflects a production-ready state." data-url="http://nvie.com/posts/a-successful-git-branching-model/">The master branch</dt>
+
+                    <dt data-what=",NG" data-hint="We consider origin/develop to be the main branch where the source code of HEAD always reflects a state with the latest delivered development changes for the next release. Some would call this the integration branch. This is where any automatic nightly builds are built from." data-url="http://nvie.com/posts/a-successful-git-branching-model/">The develop branch</dt>
+
+                    <dt data-what=",NG" data-hint="Must branch from &#39;develop&#39;. Must merge back into &#39;develop&#39;. Naming: &#39;feature/something&#39; or &#39;f/something&#39; or &#39;f-something&#39;. The essence of a feature branch is that it exists as long as the feature is in development, but will eventually be merged back into develop (to definitely add the new feature to the upcoming release) or discarded (in case of a disappointing experiment). Feature branches typically exist in developer repos only, not in origin." data-url="http://nvie.com/posts/a-successful-git-branching-model/">Feature branches</dt>
+
+                    <dt data-what=",NG" data-hint="Must branch from &#39;develop&#39;. Must merge back into &#39;develop&#39; and &#39;master&#39;. Naming: &#39;release-*&#39;. Release branches support preparation of a new production release, including last minute prep such as setting version numbers. By doing this work on a release branch, &#39;develop&#39; is cleared to receive features for the NEXT release. Release branches are created when develop reflects the desired state of the new release (i.e. has all needed features). It is on the creation of this release branch that a release number is assigned." data-url="http://nvie.com/posts/a-successful-git-branching-model/">Release branches</dt>
+
+                    <dt data-what=",NG" data-hint="Must branch from &#39;master&#39;. Must merge back into &#39;master&#39; and &#39;develop&#39;. Naming: &#39;hotfix-1.2.1&#39; (for a hotfix against release-1.2)." data-url="http://nvie.com/posts/a-successful-git-branching-model/">Hotfix branches</dt>
+
+            </dl>
+
+            <dl class="subsection">
+                <h3>Working on a feature</h3>
+
+                    <dt data-what="RLWA" data-hint="First switch to the develop branch and get latest changes from others. It is important to remember the &#39;git pull&#39;, it ensures you are always starting from the latest good state." data-url="http://git-scm.com/docs/git-pull">1. checkout develop; git pull</dt>
+
+                    <dt data-what="L" data-hint="Create a branch for your new feature. Contrary to the website, you don&#39;t need to specify &#39;develop&#39; because you just switched to it." data-url="http://git-scm.com/docs/git-checkout">2. checkout -b f-myfeature</dt>
+
+                    <dt data-what="WILA,NG" data-hint="Then work on your feature. Make as many commits as you like." data-url="">3. work on your feature</dt>
+
+                    <dt data-what="L" data-hint="Tidy your history. The first commit is first in the list, the last commit is at the bottom. Setting the first to PICK and the others to SQUASH squashes the commit history of the feature branch down to a single commit. This results in a neater history, but makes &#39;git bisect&#39; less useful. Alternatively, you can leave several key commits in the history by setting PICK and SQUASH appropriately. Use &#39;git mergetool&#39; to resolve any merge conflicts." data-url="http://git-scm.com/docs/git-rebase">4. rebase -i develop (Optional)</dt>
+
+                    <dt data-what="RLWA" data-hint="Flip to develop and get the latest changes from other people into your local repo. THIS IS IMPORTANT. If you don&#39;t do this, the merge back into develop will work without problems (because everything happens in your local repo) but the later &#39;git push&#39; will fail with the message &#39;failed to push some refs...updates were rejected because the remote contains work that you do not have locally&#39;. You will need to fix that by doing a &#39;git pull&#39; and fixing any merge conflicts. By doing a pull first we can avoid the message altogether (if there are no merge conflicts) otherwise we can fix them earlier, in the &#39;git merge&#39; step below." data-url="http://git-scm.com/docs/git-pull">5. checkout develop; git pull</dt>
+
+                    <dt data-what="LWA" data-hint="Merge your feature in. The --no-ff flag causes the merge to always create a new commit object, even if the merge could be performed with a fast-forward. This avoids losing information about the historical existence of a feature branch and groups together all commits that added the feature." data-url="http://git-scm.com/docs/git-merge">6. merge --no-ff f-myfeature</dt>
+
+                    <dt data-what="L" data-hint="Delete your feature branch. This should be safe, because feature branches are never pushed unless you want someone else to also work on them. If you did push it, don&#39;t delete it unless you are sure everybody else is also finished with the branch." data-url="http://git-scm.com/docs/git-branch">7. branch -d f-myfeature</dt>
+
+                    <dt data-what="LRA" data-hint="Push your finished feature up, this means it will be included in the next release. You can usually safely omit the &#39;origin develop&#39;, a plain &#39;git push&#39; will push all pending commits to all remote branches for which you have a tracking branch, typically this will just be &#39;develop&#39; if you have been keeping up to date." data-url="http://git-scm.com/docs/git-push">8. push origin develop</dt>
+
+            </dl>
+
+            <dl class="subsection">
+                <h3>Creating a release</h3>
+
+                    <dt data-what="RLWA" data-hint="First switch to the develop branch and get latest changes from others. It is important to remember the &#39;git pull&#39;, it ensures you are always starting from the latest good state." data-url="http://git-scm.com/docs/git-pull">1. checkout develop; git pull</dt>
+
+                    <dt data-what="L" data-hint="Create the release branch. We have decided on 1.2 as the release number. Contrary to the website, you don&#39;t need to specify &#39;develop&#39; because you just switched to it." data-url="http://git-scm.com/docs/git-checkout">2. checkout -b release-1.2</dt>
+
+                    <dt data-what="W,NG" data-hint="Run (fictional) script to update the build number." data-url="http://nvie.com/posts/a-successful-git-branching-model/">3. ./bump-version.sh 1.2</dt>
+
+                    <dt data-what="WILA" data-hint="Commit the changes to the build number." data-url="http://git-scm.com/docs/git-commit">4. commit -am &#39;Bump version to 1.2&#39;</dt>
+
+                    <dt data-what=",NG" data-hint="This new branch may exist here for a while, until the release is definitely ready to be rolled out. During this time, hot fixes may be applied in this branch (rather than on the develop branch). You may also rebase to tidy history if it gets messy. Adding large new features here is strictly prohibited. They must be merged into develop, and therefore, wait for the next big release." data-url="http://nvie.com/posts/a-successful-git-branching-model/">5. time passes ... apply hotfixes ...</dt>
+
+                    <dt data-what="RLWA" data-hint="Flip to master and get the latest changes from others. When the state of the release branch is ready to become a real release, some actions need to be carried out. First, the release branch is merged into master (since every commit on master is a new release by definition)." data-url="http://git-scm.com/docs/git-pull">6. checkout master; git pull</dt>
+
+                    <dt data-what="LWA" data-hint="Merge our release into master." data-url="http://git-scm.com/docs/git-merge">7. merge --no-ff release-1.2</dt>
+
+                    <dt data-what="L" data-hint="Create an annotated tag to mark the release. The release is now &#39;done&#39;." data-url="http://git-scm.com/docs/git-tag">8. tag -a 1.2</dt>
+
+                    <dt data-what="RLWA" data-hint="We have changes in the release-1.2 branch that are not in &#39;develop&#39;. We need to merge them, so flip over to develop and get the latest changes from others." data-url="http://git-scm.com/docs/git-pull">9. checkout develop; git pull</dt>
+
+                    <dt data-what="LWA" data-hint="We now merge the changes we made for the release back into &#39;develop&#39;. This may give a merge conflict, especially since we changed the version number." data-url="http://git-scm.com/docs/git-merge">10. merge --no-ff release-1.2</dt>
+
+                    <dt data-what="L" data-hint="Now we can delete the release branch because we no longer need it." data-url="http://git-scm.com/docs/git-branch">11. branch -d release-1.2</dt>
+
+                    <dt data-what="LRA" data-hint="Lastly we push our changes (we made commits to master and develop) to origin." data-url="http://git-scm.com/docs/git-push">12. push</dt>
+
+            </dl>
+
+            <dl class="subsection">
+                <h3>Making hotfixes</h3>
+
+                    <dt data-what="LWA" data-hint="Create a hotfix branch from the current HEAD of master, which is assumed to be release-1.2. It should not be necessary to do a git pull, but it does no harm." data-url="http://git-scm.com/docs/git-checkout">1a. checkout -b hotfix-1.2.1 master</dt>
+
+                    <dt data-what="LWA" data-hint="Create a hotfix branch for an older release, which you should name by its tag. Here a tag of &#39;0.9&#39; is assumed to exist and we are making the first hotfix to it. HOW DO WE HANDLE MULTIPLE HOT FIXES? It should not be necessary to do a git pull, but it does no harm." data-url="http://git-scm.com/docs/git-checkout">1b. checkout -b hotfix-0.9.1 0.9</dt>
+
+                    <dt data-what="W,NG" data-hint="Don&#39;t forget to run the (fictional) script to update the build number after branching off." data-url="http://nvie.com/posts/a-successful-git-branching-model/">2. ./bump-version.sh 1.2.1</dt>
+
+                    <dt data-what="WILA" data-hint="Commit the change to the build number." data-url="http://git-scm.com/docs/git-commit">3. commit -am &#39;Bumped version to 1.2.1&#39;</dt>
+
+                    <dt data-what="WILA,NG" data-hint="Make commits until it&#39;s fixed. Rebase if you want." data-url="http://nvie.com/posts/a-successful-git-branching-model/">4. work on the hotfix</dt>
+
+                    <dt data-what="WILA" data-hint="Make the final commit for this fix." data-url="http://git-scm.com/docs/git-commit">5. commit -am &#39;Fixed production problem.&#39;</dt>
+
+                    <dt data-what="RLWA" data-hint="Prepare to merge our fix back into master." data-url="http://git-scm.com/docs/git-pull">6. checkout master; git pull</dt>
+
+                    <dt data-what="LWA" data-hint="Merge our branch back in." data-url="http://git-scm.com/docs/git-merge">7. merge --no-ff hotfix-1.2.1</dt>
+
+                    <dt data-what="L" data-hint="And tag in the normal way." data-url="http://git-scm.com/docs/git-tag">8. tag -a 1.2.1</dt>
+
+                    <dt data-what="RLWA" data-hint="Prepare to merge the hotfix into develop too. HOWEVER, if there is a current release branch, you should merge the hotfix into there instead. It will end up in develop eventually, as release branches are merged into develop too. If the fix is needed in develop urgently, you can merge into both." data-url="http://git-scm.com/docs/git-pull">9. checkout develop; git pull</dt>
+
+                    <dt data-what="LWA" data-hint="Do the merge. There is no need to tag, tags are used only on the master branch." data-url="http://git-scm.com/docs/git-merge">10. merge --no-ff hotfix-1.2.1</dt>
+
+                    <dt data-what="L" data-hint="Delete the hotfix branch, we no longer need it." data-url="http://git-scm.com/docs/git-branch">11. branch -d hotfix-1.2.1</dt>
+
+            </dl>
+
+    </div>
+
+    <div class="section cs4">
+        <h2>Remotes</h2>
+
+            <dl class="subsection">
+                <h3>Setup</h3>
+
+                    <dt data-what="L" data-hint="List remotes. Without -v, just displays shortnames. With -v, also displays the urls that the shortnames are linked to." data-url="http://git-scm.com/docs/git-remote">remote [-v]</dt>
+
+                    <dt data-what="L" data-hint="Add url as a remote repo which can be referenced as &#39;shortname&#39;. When a repo is created by cloning from a url it will already have a remote called &#39;origin&#39; but you can add others and push to them separately." data-url="http://git-scm.com/docs/git-remote">remote add shortname url</dt>
+
+                    <dt data-what="L" data-hint="Change the url that a shortname points to." data-url="http://git-scm.com/docs/git-remote">remote set-url shortname url</dt>
+
+                    <dt data-what="L" data-hint="Remove the specified remote." data-url="http://git-scm.com/docs/git-remote">remote rm shortname</dt>
+
+                    <dt data-what="L" data-hint="Change the shortname used to track a remote." data-url="http://git-scm.com/docs/git-remote">remote rename oldname newname</dt>
+
+                    <dt data-what="L" data-hint="Show info about the remote." data-url="http://git-scm.com/docs/git-remote">remote show shortname</dt>
+
+            </dl>
+
+            <dl class="subsection">
+                <h3>Fetching and Pulling</h3>
+
+                    <dt data-what="RLA" data-hint="Fetch all commits for remote shortname (defaults to origin) into your local repo. Remote tracking branches such as &#39;origin/brname&#39; are updated to point to the new tips, but local tracking branches such as &#39;brname&#39; are not. The fetch includes new remote branches, but new local tracking branches will not be created; if you &#39;git checkout brname&#39; a new local branch will be created and automatically linked to the remote branch of the same name. Use &#39;git branch -a&#39; to list all branches." data-url="http://git-scm.com/docs/git-fetch">fetch [shortname]</dt>
+
+                    <dt data-what="RLA" data-hint="Fetch all tags from the remote shortname. In git versions prior to v1.9 this does NOT fetch everthing a normal fetch does, it just gets tags. For versions &gt; 1.9, it DOES fetch everything a normal fetch does and hence is the only command you need." data-url="http://git-scm.com/docs/git-fetch">fetch --tags [shortname]</dt>
+
+                    <dt data-what="RLWA" data-hint="Fetch all commits from remote repo into your local repo then on your CURRENT BRANCH ONLY merge the fetched commits into your workspace. The commits of other branches will not be merged, which is why you get the message &#39;Your branch is behind origin/master...&#39; when you switch branches. n.b. It is NOT a good idea to try and write a function to merge all branches automatically because some might fail and you will be left with a mess. Pull is effectively a git fetch followed by a git merge. Many people prefer to use the --rebase option instead of doing a merge as it results in a simpler commit history." data-url="http://git-scm.com/docs/git-pull">pull [--rebase] [shortname]</dt>
+
+            </dl>
+
+            <dl class="subsection">
+                <h3>Manual Fetch and Merge</h3>
+
+                    <dt data-what="RLA" data-hint="Fetch the latest updates from the remote specified by shortname." data-url="http://git-scm.com/docs/git-fetch">fetch shortname</dt>
+
+                    <dt data-what="WL" data-hint="Show the differences between your local tracking branch &#39;master&#39; and the remote &#39;master&#39;. That is, show what changes other people have made, before the changes hit your workspace." data-url="#">diff master shortname/master</dt>
+
+                    <dt data-what="LWA" data-hint="Merge other people&#39;s changes into your workspace." data-url="http://git-scm.com/docs/git-merge">merge shortname/master</dt>
+
+                    <dt data-what="LWA" data-hint="Rebase other people&#39;s changes into your workspace. The rebase backs out all the commits you have made since the point of divergence, sets HEAD to the tip of origin/master, then reapplies your changes on top. Hence, in this usage, it basically means &#39;accept everything that everybody else has done then apply my stuff on top&#39;." data-url="http://git-scm.com/docs/git-rebase">rebase [-i] shortname/master</dt>
+
+            </dl>
+
+            <dl class="subsection">
+                <h3>Pushing</h3>
+
+                    <dt data-what="LRA" data-hint="Push all commits on branches that exist in BOTH the local and remote repo, i.e. remote branches for which you have a local tracking branch. See following commands for ways to push new branches, however often you do NOT want to push all your local branches, especially when working with temporary bug or feature branches." data-url="http://git-scm.com/docs/git-push">push</dt>
+
+                    <dt data-what="LRA" data-hint="Push brname to the remote repo (creating it if necessary) and (-u) create a local tracking branch so that in future you can just do &#39;git push&#39;." data-url="http://git-scm.com/docs/git-push">push -u shortname brname</dt>
+
+                    <dt data-what="LRA" data-hint="Same as previous command, but --all means push all locally created branches. Use sparingly, other people propbably aren&#39;t interested in all your many temporary branches." data-url="http://git-scm.com/docs/git-push">push --all -u shortname</dt>
+
+                    <dt data-what="LRA" data-hint="Push brname to shortname, renaming it brname2 on the remote." data-url="http://git-scm.com/docs/git-push">push shortname brname:brname2</dt>
+
+                    <dt data-what="LRA" data-hint="Delete the brname branch from the remote." data-url="http://git-scm.com/docs/git-push">push shortname :brname</dt>
+
+                    <dt data-what="LRA" data-hint="Push a tag to a remote (tags are not pushed by default)." data-url="http://git-scm.com/docs/git-push">push shortname v1.5</dt>
+
+                    <dt data-what="LRA" data-hint="Push all tags to a remote (tags are not pushed by default)." data-url="http://git-scm.com/docs/git-push">push shortname --tags</dt>
+
+            </dl>
+
+            <dl class="subsection">
+                <h3>Subtrees (Sharing code)</h3>
+
+                    <dt data-what=",NG" data-hint="Subtrees supercede submodules. The usage below shows the most common case: setting up a MAIN repo that contains a sub-repo (e.g. for common code) called MiscUtils. It is a good idea to setup aliases called mupull and mupush in MAIN&#39;s .git/config. The &#39;mu&#39; prefix allows you to have several different subtrees, just setup a different alias for each one. More advanced usages, such as initially splitting out a subproject, are possible, see the documentation at the link and google." data-url="https://github.com/git/git/blob/master/contrib/subtree/git-subtree.txt">Introduction</dt>
+
+                    <dt data-what="RLWA" data-hint="Full command: git subtree add --prefix MiscUtils [--squash] remote master. Fetches the &#39;remote&#39; repo and checks out its files (as specified by the ref &#39;master&#39;) into the MiscUtils folder. For consistency it is a good idea to run all subtree commands from the root of MAIN. You don&#39;t need an alias for this command because you only need to run it once. --squash squashes all the commits in MiscUtils down to a single commit before merging - this keeps MAIN&#39;s commit history cleaner. Look in git log to see what happened." data-url="https://github.com/git/git/blob/master/contrib/subtree/git-subtree.txt">subtree add ...</dt>
+
+                    <dt data-what="RLWA" data-hint="Full command: git subtree pull --prefix MiscUtils [--squash] remote master. Fetches the latest changes from the remote sub-repo and then merges them into your MAIN repo. --squash squashes all the commits in MiscUtils down to a single commit before merging - this keeps MAIN&#39;s commit history cleaner." data-url="https://github.com/git/git/blob/master/contrib/subtree/git-subtree.txt">subtree pull ...</dt>
+
+                    <dt data-what="LRA" data-hint="Full command: git subtree push --prefix MiscUtils remote master. Push changes that you have made in your local copy of MiscUtils back up the remote repo. In other words, this is how you contribute code back to the master MiscUtils repository. It is advisable to pull the latest remote changes down first before trying to push your stuff back up. n.b. See the advice at the link about splitting out commits that affect subtrees; it&#39;s not necessary but is a good idea." data-url="https://github.com/git/git/blob/master/contrib/subtree/git-subtree.txt">subtree push ...</dt>
+
+                    <dt data-what=",NG" data-hint="Nothing to do. Subtrees don&#39;t use any special files or tracking, so just stop using &#39;subtree pull&#39; and &#39;subtree push&#39;." data-url="https://github.com/git/git/blob/master/contrib/subtree/git-subtree.txt">Terminating the link</dt>
+
+            </dl>
+
+    </div>
+
+    <div class="section cs5">
+        <h2>Reviewing</h2>
+
+            <dl class="subsection">
+                <h3>Comparing</h3>
+
+                    <dt data-what="WI" data-hint="Compare the workspace to the index. This form shows the unstaged changes. --stat draws the file modification histogram and can be used with any diff command." data-url="http://git-scm.com/docs/git-diff">diff [-- path] [--stat]</dt>
+
+                    <dt data-what="IL" data-hint="Compare the index to the repo. sha defaults to HEAD, therefore this form shows the change you are about to commit. Use a branch name to compare to the tip of that branch. --staged is a synonym for --cached." data-url="http://git-scm.com/docs/git-diff">diff --cached [sha] [-- path]</dt>
+
+                    <dt data-what="WL" data-hint="Compare the workspace to the repo. sha will typically be HEAD, therefore this form shows your current state vs the last commit." data-url="http://git-scm.com/docs/git-diff">diff sha [-- path]</dt>
+
+                    <dt data-what="L" data-hint="Compare two arbitrary commits. The index and workspace are not involved. You may omit one commit, which will default to HEAD. n.b. sha1 and sha2 can be branch names, which is how you compare a file across branches. You can use the alternative double-dot syntax, sha1..sha2, which means exactly the same thing (diff the two commits). This is very different from the use of .. in the log command." data-url="http://git-scm.com/docs/git-diff">diff sha1 sha2 [-- path]</dt>
+
+                    <dt data-what="L" data-hint="Example of the above: compare the most recently committed version of filespec with the version prior to that (&#39;show me the change I just committed&#39;)." data-url="http://git-scm.com/docs/git-diff">diff HEAD~ -- filespec</dt>
+
+                    <dt data-what="L" data-hint="View the changes on the branch containing the second commit, starting at the most recent common ancestor of both commits. Either commit can be omitted and defaults to HEAD." data-url="http://git-scm.com/docs/git-diff">diff sha1\...sha2 [-- path]</dt>
+
+                    <dt data-what="L" data-hint="Get a list of files changed between two commits with an indicator of what happened. This is a more exotic version of the simple &#39;diff --name-only&#39; command, which just gives you the file list (handy for scripting)." data-url="http://git-scm.com/docs/git-diff">diff --name-status --oneline sha1 sha2</dt>
+
+                    <dt data-what="L" data-hint="VALID DURING A MERGE ONLY. Compare the mergebase (1) to &#39;theirs&#39; (3). In other words, this shows you the changes made on the branch that you are merging in since it diverged. 2 is &#39;our&#39; version." data-url="http://git-scm.com/docs/git-diff">diff :1:filespec :3:filespec</dt>
+
+                    <dt data-what="" data-hint="Run a graphical diff, which you must first have configured in .gitconfig. It accepts the same arguments as git-diff. Be careful not to diff binary files." data-url="http://git-scm.com/docs/git-difftool">difftool</dt>
+
+            </dl>
+
+            <dl class="subsection">
+                <h3>Status and History</h3>
+
+                    <dt data-what="WIL" data-hint="Display status of files in the workspace and index vs the repo. --short is very brief, see the link for explanation. --ignored is a good way of finding the ignored files." data-url="http://git-scm.com/docs/git-status">status [--short] [--ignored]</dt>
+
+                    <dt data-what="L,NG" data-hint="Display graphical repository browser. Accepts the same options as &#39;git log&#39;. The --all option makes it display the branching history for every branch, otherwise it just shows your current branch. Pass a file to look at the history of an individual file." data-url="http://git-scm.com/docs/gitk">gitk [--all] [file]</dt>
+
+                    <dt data-what="L" data-hint="Limit commits to those in the range, which defaults to HEAD, i.e. everything. &#39;origin..HEAD&#39; means all commits reachable from the current commit (i.e. HEAD) but not from origin. So for example if you are on a branch forked from master, &#39;master..&#39; will limit to the commits on that branch." data-url="http://git-scm.com/docs/git-log">log [options] revisionrange</dt>
+
+                    <dt data-what="L" data-hint="Example of the previous: show the log of a particular branch." data-url="http://git-scm.com/docs/git-log">log [options] brname</dt>
+
+                    <dt data-what="L" data-hint="Restrict history to those commits affecting file(s) or folder(s). Pathspec is always last, after the revisionrange. The full format is not always necessary, for example &#39;git log README.md&#39; will work." data-url="http://git-scm.com/docs/git-log">log [options] -- pathspec</dt>
+
+                    <dt data-what="L" data-hint="N = number of commits to limit to." data-url="http://git-scm.com/docs/git-log">log [-N]</dt>
+
+                    <dt data-what="L" data-hint="Only show commits after/before datespec. datespec can be &#39;2 weeks&#39;, &#39;3 months ago&#39; (in quotes), a date literal such as &#39;27-09-2013&#39; or even just a time such as &#39;14:30&#39;." data-url="http://git-scm.com/docs/git-log">log --[after|before]=datespec</dt>
+
+                    <dt data-what="L" data-hint="Display log with diffs." data-url="http://git-scm.com/docs/git-log">log -p</dt>
+
+                    <dt data-what="L" data-hint="Display log with statistics. --stat shows the name of each file with lines inserted and deleted in a histogram. --shortstat only shows the last line, the one that says &#39;2 files changed, 3 insertions(+), 1 deletion(-)&#39;." data-url="http://git-scm.com/docs/git-log">log --stat | --shortstat</dt>
+
+                    <dt data-what="L" data-hint="Show commits authored by &#39;somebody&#39; (which is a regex). The author is the person who originally wrote the code. The match is against the &#39;Author:&#39; line that is printed by the git log command. &#39;git log --author=Ph&#39; or &#39;git log --author=Da&#39; is sufficient to find commits by &#39;Philip Daniels&#39;, you can use parts of the email address as well." data-url="http://git-scm.com/docs/git-log">log --author=somebody</dt>
+
+                    <dt data-what="L" data-hint="Show commits committed by &#39;somebody&#39; (which is a regex). The committer is the person who applied the patch. Normally committer and author are the same, the committer is only different if you are sending patches off to someone." data-url="http://git-scm.com/docs/git-log">log --committer=somebody</dt>
+
+                    <dt data-what="L" data-hint="Show commits with messages that match the pattern." data-url="http://git-scm.com/docs/git-log">log --grep=pattern</dt>
+
+                    <dt data-what="L" data-hint="Show commits that add or remove the string in the content. Example: git log -S&#39;void foo()&#39;." data-url="http://git-scm.com/docs/git-log">log -S&#39;string&#39;</dt>
+
+                    <dt data-what="L" data-hint="Show commits that add or remove the pattern in the content. Example git log -G&#39;^int gtk&#39;." data-url="http://git-scm.com/docs/git-log">log -G&#39;pattern&#39;</dt>
+
+                    <dt data-what="L" data-hint="Show the commits that affected the line range start-end within &#39;file&#39;. start and end can be numbers, regexes or offsets (see the documentation, there is also a good example at the bottom). This is a great way of finding what changed something in a file." data-url="http://git-scm.com/docs/git-log">log -L start,end:file</dt>
+
+                    <dt data-what="L" data-hint="The -i option makes pattern matches for --author, --committer, --grep etc. case-insensitive." data-url="http://git-scm.com/docs/git-log">log -i</dt>
+
+                    <dt data-what="L" data-hint="AND all match options together (default is OR)." data-url="http://git-scm.com/docs/git-log">log --all-match</dt>
+
+                    <dt data-what="L" data-hint="Show commits in current branch that aren&#39;t at the remote (i.e. will be pushed)." data-url="http://git-scm.com/docs/git-log">log origin/master..HEAD</dt>
+
+                    <dt data-what="L" data-hint="Specify log format. Valid options are short, medium, full, fuller, email, raw and format:&lt;string&gt;" data-url="http://git-scm.com/docs/git-log">log --pretty=...</dt>
+
+                    <dt data-what="L" data-hint="Show which commit and person was responsible for each line of a file." data-url="http://git-scm.com/docs/git-blame">blame filespec</dt>
+
+                    <dt data-what="L" data-hint="Graphical blame." data-url="http://git-scm.com/docs/git-gui">gui blame filespec</dt>
+
+            </dl>
+
+            <dl class="subsection">
+                <h3>Commit Ranges</h3>
+
+                    <dt data-what="L" data-hint="Include commits that are reachable from (i.e. ancestors of) sha." data-url="http://git-scm.com/docs/gitrevisions.html">log sha</dt>
+
+                    <dt data-what="L" data-hint="Exclude commits that are reachable from (i.e. ancestors of) sha." data-url="http://git-scm.com/docs/gitrevisions.html">log ^sha</dt>
+
+                    <dt data-what="L" data-hint="Include commits that are reachable from sha2 but exclude those that are reachable from sha1. Mnemonic: &#39;In end but not start.&#39; This is exactly the same as the longhand form &#39;log ^sha1 sha2&#39;. When either sha1 or sha2 is omitted, it defaults to HEAD." data-url="http://git-scm.com/docs/gitrevisions.html">log sha1..sha2</dt>
+
+                    <dt data-what="L" data-hint="Example: show commits in branch f-myfeature that are not in master." data-url="http://git-scm.com/docs/gitrevisions.html">log master..f-myfeature</dt>
+
+                    <dt data-what="L" data-hint="Example: show commits in master that are not in your branch (useful for previewing merges)." data-url="http://git-scm.com/docs/gitrevisions.html">log f-myfeature..master</dt>
+
+                    <dt data-what="L" data-hint="Example: show commits that are not pushed to the remote." data-url="http://git-scm.com/docs/gitrevisions.html">log origin/master..HEAD</dt>
+
+                    <dt data-what="L" data-hint="The general form of &#39;git log&#39; commit ranges. Specifying a commit means &#39;show me that commit and its ancestors&#39;. Negating that with ^ means &#39;...but exclude this commit and its ancestors.&#39; " data-url="http://git-scm.com/docs/gitrevisions.html">log ^exc1 ^exc2 inc1 inc2</dt>
+
+            </dl>
+
+    </div>
+
+    <div class="section cs6">
+        <h2>Misc 1</h2>
+
+            <dl class="subsection">
+                <h3>Showing Objects</h3>
+
+                    <dt data-what="L" data-hint="Show the sha that &#39;ref&#39; refers to. ref may be a branch name, a tag, or any other type of reference." data-url="http://git-scm.com/docs/git-rev-parse">revparse ref</dt>
+
+                    <dt data-what="L" data-hint="Display the reflog, a history of changes to refs within your repo. The command accepts all (most?) of the options to the &#39;git log&#39; command, so -p will show patches. You can even do pretty formats." data-url="http://git-scm.com/docs/git-reflog">reflog [log options]</dt>
+
+                    <dt data-what="L" data-hint="Show details of things (blobs, trees, tags and commits). Examples of naming objects are covered in the next examples, which use git-show, but link to the gitrevisions page where revisions are described in detail." data-url="http://git-scm.com/docs/git-show">show [options] [things]</dt>
+
+                    <dt data-what="L" data-hint="Show details of specified commit (defaults to HEAD)." data-url="http://git-scm.com/docs/gitrevisions.html">show sha1</dt>
+
+                    <dt data-what="L" data-hint="Ref is a symbolic name, such as master, heads/master or refs/heads/master." data-url="http://git-scm.com/docs/gitrevisions.html">show ref</dt>
+
+                    <dt data-what="L" data-hint="Show the contents of the file in the ref. For example, ref may be a branch name or HEAD~10. Therefore &#39;show dev~5:Makefile&#39; shows what Makefile looks like on the dev branch 5 revisions ago." data-url="http://git-scm.com/docs/gitrevisions.html">show ref:pathspec</dt>
+
+                    <dt data-what="I" data-hint="Show a file as it exists in the index." data-url="http://git-scm.com/docs/gitrevisions.html">show :pathspec</dt>
+
+                    <dt data-what="L" data-hint="@ by itself is a shortcut for HEAD." data-url="http://git-scm.com/docs/gitrevisions.html">show @</dt>
+
+                    <dt data-what="L" data-hint="A point in time, e.g. &#39;master@{yesterday}&#39; shows the master branch as it appeared yesterday, &#39;HEAD@{5 minutes ago}&#39; shows the current branch as it was 5 minutes ago. NOTE: This is not as useful as it appears because it only works on things that are in your local reflog (&#39;git reflog&#39;), so it is no good on a repository you have just cloned. Use --before and --after instead." data-url="http://git-scm.com/docs/gitrevisions.html">show ref@{date}</dt>
+
+                    <dt data-what="L" data-hint="N is a number. master@{1} means the immediate prior value of master, while master@{5} means the 5th prior value. This is also dependent upon the git reflog." data-url="http://git-scm.com/docs/gitrevisions.html">show ref@{N}</dt>
+
+                    <dt data-what="L" data-hint="N is a number and means &#39;Nth ancestor&#39;, i.e. follow the commit chain back in time always using the first parent. ~ therefore allows you to examine the history of a file. It is quite different to ^N, which is only useful for merges." data-url="http://git-scm.com/docs/gitrevisions.html">show rev~N</dt>
+
+                    <dt data-what="L" data-hint="N is a number and means &#39;Nth parent&#39;. Normally N is omitted and defaults to 1, which means &#39;the first parent&#39;. ONLY MERGES HAVE MORE THAN ONE PARENT." data-url="http://git-scm.com/docs/gitrevisions.html">show rev^N</dt>
+
+                    <dt data-what="L" data-hint="An example of how to recover an old version of a file into a new filename. If you just want to replace in your workspace, you can do a &#39;git checkout&#39; instead." data-url="http://git-scm.com/docs/gitrevisions.html">show HEAD~4:File &gt; OldFile</dt>
+
+            </dl>
+
+            <dl class="subsection">
+                <h3>Stashing</h3>
+
+                    <dt data-what="S" data-hint="Show stack of stashes. stash@{0} is the latest stash. The branch that was current when the stash was made is also shown." data-url="http://git-scm.com/docs/git-stash">stash list</dt>
+
+                    <dt data-what="IWSA" data-hint="Copy the current state of the workspace and index into a new stash then run &#39;git reset --hard&#39; to undo your changes (if there are no changes this is a no-op). --untracked will also include UNTRACKED files in the stash and then delete them using &#39;git clean&#39; (you should probably do this), and --all will also include IGNORED files the stash - this last step is only necessary if you are planning on changing what is .gitignored." data-url="http://git-scm.com/docs/git-stash">stash save [--untracked | --all] [msg]</dt>
+
+                    <dt data-what="S" data-hint="Show the difference between the stash and its parent, i.e. this shows the change that the stash introduces." data-url="http://git-scm.com/docs/git-stash">stash show [stash]</dt>
+
+                    <dt data-what="SWA" data-hint="Apply the specified stash (defaults to stash@{0}) then delete it. If the application fails due to conflicts then resolve them manually then do &#39;git stash drop&#39; to remove the stash manually." data-url="http://git-scm.com/docs/git-stash">stash pop [stash]</dt>
+
+                    <dt data-what="SWA" data-hint="Like pop, but does not delete the stash when done." data-url="http://git-scm.com/docs/git-stash">stash apply [stash]</dt>
+
+                    <dt data-what="SWLA" data-hint="Create and checkout brname starting from the commit at which the stash was originally created, apply the stash on top then drop the stash. This effectively converts a stash into a branch." data-url="http://git-scm.com/docs/git-stash">stash branch brname [stash]</dt>
+
+                    <dt data-what="S" data-hint="Drop a stash." data-url="http://git-scm.com/docs/git-stash">stash drop [stash]</dt>
+
+                    <dt data-what="S" data-hint="Drop all stashes." data-url="http://git-scm.com/docs/git-stash">stash clear</dt>
+
+            </dl>
+
+            <dl class="subsection">
+                <h3>Tagging</h3>
+
+                    <dt data-what="L,NG" data-hint="A tag and a branch serve different purposes. A tag is meant to be a static name that does not change or move over time. Once applied, you should leave it alone. It serves as a stake in the ground and a reference point. On the other hand, a branch is dynamic and moves with each commit you make. The branch name is designed to follow your continuing development. - Jon Loeliger, Version Control with Git." data-url="#">tags vs branches</dt>
+
+                    <dt data-what="L" data-hint="List all tags." data-url="http://git-scm.com/docs/git-tag">tag</dt>
+
+                    <dt data-what="L" data-hint="List all tags matching pattern." data-url="http://git-scm.com/docs/git-tag">tag -l v1.4*</dt>
+
+                    <dt data-what="L" data-hint="Show the tag message, the commit message, and a diff of the commit." data-url="http://git-scm.com/docs/git-tag">show v1.4</dt>
+
+                    <dt data-what="L" data-hint="Create the annotated tag &#39;v1.4&#39; with specified message. You should always use annotated tags and avoid lightweight tags." data-url="http://git-scm.com/docs/git-tag">tag -a v1.4 -m &quot;message&quot;</dt>
+
+                    <dt data-what="L" data-hint="Tag a specific commit." data-url="http://git-scm.com/docs/git-tag">tag -a v1.4 sha</dt>
+
+                    <dt data-what="LRA" data-hint="Push a tag to a remote (tags are not pushed by default)." data-url="http://git-scm.com/docs/git-tag">push shortname v1.5</dt>
+
+                    <dt data-what="LRA" data-hint="Push all tags to a remote (tags are not pushed by default)." data-url="http://git-scm.com/docs/git-tag">push origin --tags</dt>
+
+                    <dt data-what="L" data-hint="Force a tag creation on a particular commit. You can use this to move a tag from one commit to another BUT DON&#39;T DO THIS if you have pushed the tag (see discussion at link)." data-url="http://git-scm.com/docs/git-tag">tag -f v1.4 sha</dt>
+
+                    <dt data-what="L" data-hint="Delete a tag." data-url="http://git-scm.com/docs/git-tag">tag -d v1.4</dt>
+
+            </dl>
+
+            <dl class="subsection">
+                <h3>Bisection</h3>
+
+                    <dt data-what="LWA" data-hint="Bisect uses a binary search through your commit history to find a bug. Use &#39;bisect start&#39; to start the process, then &#39;bisect good&#39; and &#39;bisect bad&#39; to set the bounds of the search. See link for more details." data-url="http://git-scm.com/docs/git-bisect">bisect start</dt>
+
+                    <dt data-what="LWA" data-hint="If you have a script (such as a compile &amp; unit test script) that can return a code indicating whether a build is good or bad you can automate the entire process." data-url="http://git-scm.com/docs/git-bisect">bisect run my_script args</dt>
+
+            </dl>
+
+            <dl class="subsection">
+                <h3>Plumbing Commands</h3>
+
+                    <dt data-what="L" data-hint="Show staged files. -s shows all staged files, -u shows just those with conflicts. This can be useful during a merge to examine each version. The numbers are stage numbers. 1 is the merge base, 2 is &#39;our&#39; version, and 3 is &#39;their&#39; version. (0 means a non-conflicted staged file). Use git cat-file to examine each file. If you are on master and merging in brname, then &#39;ours&#39; is the master version, and &#39;theirs&#39; is the brname version." data-url="http://git-scm.com/docs/git-ls-files">ls-files -s | -u</dt>
+
+                    <dt data-what="L" data-hint="Cat a file. This low-level command is useful for examining the 3 versions of a file during merge conflicts." data-url="http://git-scm.com/docs/git-cat-file">cat-file -p sha</dt>
+
+            </dl>
+
+    </div>
+
+</div>
+
+<div style='display:none'>
+    <div id='inline_content' class="inline_content">
+        <p class="credits">
+            Inspired by Oscar Otero's wonderful <a href="http://oscarotero.com/jquery/">jQuery Cheatsheet</a> and
+            much reading of Scott Chacon's <a href="http://git-scm.com/">git-scm.com</a> from where I borrowed
+            the favicon <a href="http://creativecommons.org/licenses/by/3.0/">(Licence)</a>.
+            Andrew Peterson's funky <a href="http://www.ndpsoftware.com/git-cheatsheet.html">Git Cheatsheet</a>
+            supplied the inspiration for the SWILR boxes.
+        </p>
+        <p class="poweredBy">
+            Built with <a href="https://github.com/PhilipDaniels/Lithogen/">Lithogen</a> and
+            <a href="http://html5boilerplate.com/">HTML 5 Boilerplate</a> with
+            popups by <a href="http://www.jacklmoore.com/colorbox/">jQuery Colorbox</a>.
+        </p>
+        <p class="contactMe">
+            All errors and omissions are my own. If you like this,
+            <a href="mailto:Philip.Daniels1971@gmail.com">Email me</a>.
+        </p>
+        <p>
+        <strong>Theme:</strong>
+            <select id="themeSelector">
+                <option value="theme.solarized_dark.css">Solarized Dark</option>
+                <option value="theme.solarized_light.css">Solarized Light</option>
+                <option value="theme.colorful.css">Colorful</option>
+                <option value="theme.orangeramp.css">Orange Ramp</option>
+                <option value="theme.yellowramp.css">Yellow Ramp</option>
+                <option value="theme.tealesque.css">Teal-esque</option>
+            </select>
+        </p>
+    </div>
+</div>
+
+
+
+    <!-- Google Analytics: change UA-XXXXX-X to be your site's ID. -->
+    <script>
+        (function (b, o, i, l, e, r) {
+            b.GoogleAnalyticsObject = l; b[l] || (b[l] =
+            function () { (b[l].q = b[l].q || []).push(arguments) }); b[l].l = +new Date;
+            e = o.createElement(i); r = o.getElementsByTagName(i)[0];
+            e.src = '//www.google-analytics.com/analytics.js';
+            r.parentNode.insertBefore(e, r)
+        }(window, document, 'script', 'ga'));
+        ga('create', 'UA-51573023-1', 'philipdaniels.com'); ga('send', 'pageview');
+    </script>
+</body>
+</html>
