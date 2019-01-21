@@ -28,6 +28,9 @@ git push origin master
 
 cd ..
 
+# Also commit the main website sources. Even if we committed all
+# our changed files, the `hugo` step above will be showing changes
+# in the `public` directory that are annoying.
 echo -e "\033[0;32mCommitting website sources...\033[0m"
 git add .
 msg="Rebuilding site `date`"
