@@ -6,10 +6,10 @@ Sources for my (mainly) Hugo-based website.
 * [ ] Get GA working on everything and check the warning has gone
 * [ ] Get Disqus working
 * [ ] Identities: github, stack overflow
-* [ ] Github Pages hosting integration with a custom domain name
+* [ ] Github Pages: migrate my DNS.
 * [ ] Turn off digital ocean droplet
 * [ ] Integrated search
 * [ ] Rebuild my gitcheatsheet?
 * [ ] Use portfolio to link to GCS
 * [ ] Make headings and main font smaller
-
+* [ ] What has happened to the width?
