@@ -28,4 +28,16 @@ git push origin master
 
 cd ..
 
+echo -e "\033[0;32mCommitting website sources...\033[0m"
+git add .
+msg="Rebuilding site `date`"
+if [ $# -eq 1 ]
+  then msg="$1"
+fi
+git commit -m "$msg"
+echo -e "\033[0;32mPushing website sources...\033[0m"
+git push origin master
+
+
 echo -e "\033[0;32mAll done.\033[0m"
+
