@@ -1,3 +1,5 @@
+# See for examples: https://github.com/htr3n/hyde-hyde/blob/master/exampleSite/config.toml
+
 baseURL = "http://philipdaniels.com/"
 languageCode = "en-us"
 title = "Phil's Blog"
@@ -19,10 +21,29 @@ highlightjsstyle="gruvbox-dark"
 highlightjslanguages = ["rust", "cs", "bash", "python", "css", "http", "ini", "javascript", "json",
 "markdown", "sql", "html", "xml", "dockerfile", "scss", "r", "typescript", "go", "cpp", "dos",
 "plaintext", "powershell", "diff", "makefile", "lisp"]
-
+copyright = "Philip Daniels"
+author = "Philip Daniels"
+showBuiltWith = true
+dateformat = "Jan 2, 2006"
 
 [params.social]
 gravatar = "philip.daniels1971@gmail.com"
 github = "PhilipDaniels"
 stackoverflow = "1313057/philip-daniels"
 email = "philip.daniels1971@gmail.com"
+
+[[menu.main]]
+    name = "Posts"
+    identifier = "posts"
+    weight = 100
+    url = "/blog"
+[[menu.main]]
+    name = "My Git CheatSheet"
+    identifier = "gitcheatsheet"
+    weight = 200
+    url = "/gitcheatsheet"
+[[menu.main]]
+    name = "About"
+    identifier = "about"
+    weight = 400
+    url = "/about"
