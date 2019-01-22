@@ -6,7 +6,6 @@ Sources for my (mainly) Hugo-based website.
 * [ ] Get Disqus working
 * [ ] Integrated search
 * [ ] Port ConfigZilla pages, including GA
-* [ ] Identities: github, stack overflow
 * [ ] Github Pages: migrate my DNS.
 * [ ] Turn off digital ocean droplet
 * [ ] Rebuild my gitcheatsheet?
