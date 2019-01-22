@@ -5,6 +5,7 @@ Sources for my (mainly) Hugo-based website.
 # TODO
 * [ ] Get Disqus working
 * [ ] Integrated search
+* [ ] RSS
 * [ ] Port ConfigZilla pages, including GA
 * [ ] Github Pages: migrate my DNS.
 * [ ] Turn off digital ocean droplet
