@@ -3,6 +3,7 @@ languageCode = "en-us"
 title = "Phil's Blog"
 theme = "hyde-hyde"
 googleAnalytics = "UA-51573023-1"
+disqusShortname = "philipdanielscomblog.disqus.com"
 
 [params]
 # This lot is for the hyde-hyde theme to make it use highlight.js instead of Hugo's
@@ -19,7 +20,9 @@ highlightjslanguages = ["rust", "cs", "bash", "python", "css", "http", "ini", "j
 "markdown", "sql", "html", "xml", "dockerfile", "scss", "r", "typescript", "go", "cpp", "dos",
 "plaintext", "powershell", "diff", "makefile", "lisp"]
 
+
 [params.social]
 gravatar = "philip.daniels1971@gmail.com"
 github = "PhilipDaniels"
 stackoverflow = "1313057/philip-daniels"
+email = "philip.daniels1971@gmail.com"
