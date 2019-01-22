@@ -11,5 +11,15 @@ Sources for my (mainly) Hugo-based website.
 * [ ] Integrated search
 * [ ] Rebuild my gitcheatsheet?
 * [ ] Use portfolio to link to gitcheatsheet
-* [ ] Make headings and main font smaller
-* [ ] What has happened to the width?
+* [ ] Write a script for a new post, in the current year, title, create folder.
+* [ ] Navigation issues
+    * [ ] Clicking Phil's Blog should take you to a TOC for the blog
+    * [ ] I should have a link at the left to take you to my 'portfolio',
+          which is just a TOC for the overall site.
+    * [ ] The LHS should have explicit links for the blog, rust-for-cs, and Linux cheats?
+* [ ] Layout issues
+    * [ ] Dates on TOC are not nice, want full year. TOC should be arranged by year too.
+    * [ ] The width of the overall blog is too narrow
+    * [ ] Make headings and main font smaller
+    * [ ] Decrease line spacing?
+    * [ ] I should have my Hong Kong Phooey Avatar on the LHS.
