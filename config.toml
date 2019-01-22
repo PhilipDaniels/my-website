@@ -21,3 +21,5 @@ highlightjslanguages = ["rust", "cs", "bash", "python", "css", "http", "ini", "j
 
 [params.social]
 gravatar = "philip.daniels1971@gmail.com"
+github = "PhilipDaniels"
+stackoverflow = "1313057/philip-daniels"
