@@ -3,12 +3,12 @@
 Sources for my (mainly) Hugo-based website.
 
 # TODO
-* [ ] Port ConfigZilla pages, including GA
 * [ ] Get Disqus working
+* [ ] Integrated search
+* [ ] Port ConfigZilla pages, including GA
 * [ ] Identities: github, stack overflow
 * [ ] Github Pages: migrate my DNS.
 * [ ] Turn off digital ocean droplet
-* [ ] Integrated search
 * [ ] Rebuild my gitcheatsheet?
 * [ ] Use portfolio to link to gitcheatsheet
 * [ ] Write a script for a new post, in the current year, title, create folder.
@@ -22,4 +22,3 @@ Sources for my (mainly) Hugo-based website.
     * [ ] The width of the overall blog is too narrow
     * [ ] Make headings and main font smaller
     * [ ] Decrease line spacing?
-    * [ ] I should have my Hong Kong Phooey Avatar on the LHS.
