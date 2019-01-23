@@ -24,7 +24,7 @@ highlightjslanguages = ["rust", "cs", "bash", "python", "css", "http", "ini", "j
 "plaintext", "powershell", "diff", "makefile", "lisp"]
 copyright = "Philip Daniels"
 author = "Philip Daniels"
-showBuiltWith = true
+# showBuiltWith = true
 dateformat = "Jan 2, 2006"
 
 [params.social]
