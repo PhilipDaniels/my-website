@@ -1,6 +1,6 @@
 # See for examples: https://github.com/htr3n/hyde-hyde/blob/master/exampleSite/config.toml
 
-baseURL = "http://philipdaniels.com/"
+baseURL = "http://www.philipdaniels.com/"
 languageCode = "en-us"
 title = "Phil's Blog"
 theme = "hyde-hyde"
