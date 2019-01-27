@@ -109,6 +109,18 @@ must be as shown, or you won't get the desired result. Also be careful to cat
 the public file, not the private one, this is an easy mistake to make if you are
 using tab-completion to enter the filename.
 
+## Using multiple key files
+
+My [.bashrc](https://github.com/PhilipDaniels/dotfiles/blob/master/.bashrc)
+now looks like this:
+
+```
+KeyFiles=`find ~/.ssh -type f ! -name "*.*" -name "id*"`
+eval `keychain --quiet --eval "$KeyFiles"`
+```
+
+And hence runs keychain for both my personal and work ssh keys.
+
 ## Installing a key on Unix Servers
 
 If you want to install your public key **itself** (so that it is available when
@@ -284,3 +296,12 @@ You will be asked for your passphrase:
 ![PuTTY SSH file](putty-pwd-prompt.png)
 
 
+## SSH in Visual Studio
+
+I had to create an environment variable **GIT_SSH** in Windows to get Visual Studio to use SSH.
+Its value is
+
+    GIT_SSH=C:\Users\pdaniels\AppData\Local\SourceTree\app-2.6.10\tools\putty\plink.exe
+
+This variable must NOT be set for Cygwin or WSL, otherwise it interferes with normal git remote
+operations on those systems.
