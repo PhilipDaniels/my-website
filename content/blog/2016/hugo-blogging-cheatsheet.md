@@ -3,6 +3,8 @@ title: "Hugo Cheatsheet"
 date: 2016-03-01
 draft: false
 tags: [hugo]
+aliases:
+  - /blog/2016/03/hugo-blogging-cheatsheet
 ---
 
 
