@@ -1,6 +1,6 @@
 ---
 title: "Hugo Cheatsheet"
-date: 2019-01-20T14:42:18Z
+date: 2016-03-01
 draft: false
 tags: [hugo]
 ---
