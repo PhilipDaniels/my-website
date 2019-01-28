@@ -6,7 +6,7 @@ Sources for my (mainly) Hugo-based website.
 * [ ] Integrated search
 * [ ] RSS
 * [ ] Port ConfigZilla pages, including GA
-8 [ ] Need to clean out the public folder before running publish. Except for the CNAME file...
+* [ ] Need a favicon
 * [ ] Rebuild my gitcheatsheet?
 * [ ] Navigation issues
     * [ ] Clicking Phil's Blog should take you to the 'posts' page

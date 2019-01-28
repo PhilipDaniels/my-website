@@ -8,6 +8,11 @@ then
     exit 1
 fi
 
+# Remove everything except the CNAME file and the `.git` file which
+# sets up the submodule.
+echo -e "\033[0;32mCleaning out the public folder...\033[0m"
+find public -type f -not -name 'CNAME' -not -name '.git' -delete
+
 echo -e "\033[0;32mBuilding site...\033[0m"
 hugo
 
