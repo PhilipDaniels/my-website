@@ -1,15 +1,8 @@
-<script>
-  (function() {
-    var cx = '017866948493812676638:8wnemilhr30';
-    var gcse = document.createElement('script');
-    gcse.type = 'text/javascript';
-    gcse.async = true;
-    gcse.src = 'https://cse.google.com/cse.js?cx=' + cx;
-    var s = document.getElementsByTagName('script')[0];
-    s.parentNode.insertBefore(gcse, s);
-  })();
-</script>
-<gcse:search></gcse:search>
+<form role="search" method="get" action="https://www.google.com/search">
+  <input type="search" placeholder="Search..." value="" name="q" title="Search for:">
+  <input type="hidden" name="sitesearch" value="www.philipdaniels.com/blog">
+  <button type="submit" value="Search"/>
+</form>
 
 {{ range . }}
 <li>
