@@ -1,8 +1,10 @@
-<form role="search" method="get" action="https://www.google.com/search">
-  <input type="search" placeholder="Search..." value="" name="q" title="Search for:">
-  <input type="hidden" name="sitesearch" value="www.philipdaniels.com/blog">
-  <button type="submit" value="Search"/>
+<form action="http://www.google.com/search" method="get">
+  <input type="hidden" name="q" value="site:https://www.philipdaniels.com">
+  <input type="text" name="q" alt="search">
+  <input type="submit" value="Search">
 </form>
+
+
 
 {{ range . }}
 <li>
