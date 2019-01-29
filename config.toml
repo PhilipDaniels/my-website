@@ -3,7 +3,7 @@
 baseURL = "https://www.philipdaniels.com/"
 languageCode = "en-us"
 title = "Phil's Blog"
-theme = "hyde-hyde"
+theme = "hyde-hyde-pd"
 googleAnalytics = "UA-51573023-1"
 disqusShortname = "philipdanielscomblog"
 enableRobotsTXT = true
