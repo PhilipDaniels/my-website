@@ -1,0 +1,23 @@
+<script>
+  (function() {
+    var cx = '017866948493812676638:8wnemilhr30';
+    var gcse = document.createElement('script');
+    gcse.type = 'text/javascript';
+    gcse.async = true;
+    gcse.src = 'https://cse.google.com/cse.js?cx=' + cx;
+    var s = document.getElementsByTagName('script')[0];
+    s.parentNode.insertBefore(gcse, s);
+  })();
+</script>
+<gcse:search></gcse:search>
+
+{{ range . }}
+<li>
+  <span class="list__title--small">
+    <a href="{{ .RelPermalink }}" {{if .Draft}}class="draft"{{end}}>{{ .Title }}</a>
+      {{if not .Date.IsZero}}
+      <time class="pull-right hidden-tablet">{{.Date.Format ("02 Jan 2006")}}</time>
+      {{end}}
+  </span>
+</li>
+{{ end }}

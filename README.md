@@ -6,7 +6,6 @@ Sources for my (mainly) Hugo-based website.
 * [ ] Integrated search
 * [ ] RSS
 * [ ] Port ConfigZilla pages, including GA
-* [ ] Need a favicon
 * [ ] Rebuild my gitcheatsheet?
 * [ ] Navigation issues
     * [ ] Clicking Phil's Blog should take you to the 'posts' page
