@@ -3,7 +3,6 @@
 Sources for my (mainly) Hugo-based website.
 
 # TODO
-* [ ] Integrated search
 * [ ] RSS
 * [ ] Port ConfigZilla pages, including GA
 * [ ] Rebuild my gitcheatsheet?
