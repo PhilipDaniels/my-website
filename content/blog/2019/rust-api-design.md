@@ -139,7 +139,7 @@ let s: SolutionDirectory = "somepath".into();
   `Path`, `String`, `&str`, `OsString` and `OsStr` among others.
 * `Into<String>` will take the usual string types plus `Box<str>`, `Rc<String>`,
   `Cow<str>` etc.
-* There is little difference between `&str` and `AsRef<String>`. `&str` might be
+* There is little difference between `&str` and `AsRef<str>`. `&str` might be
   [more idiomatic](https://stevedonovan.github.io/rustifications/2018/09/08/common-rust-traits.html) -
   see section 'Reference Conversions - AsRef'.
 * The above traits must not fail. Coming soon are
