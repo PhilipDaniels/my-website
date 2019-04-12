@@ -1,5 +1,5 @@
 ---
-title: "Design of Rust APIs (method signatures)"
+title: "Design of Rust APIs (AsRef, Into, Cow)"
 date: "2019-04-06"
 draft: false
 tags: [rust, api, cow]
@@ -192,3 +192,11 @@ fn main() {
     }
 }
 ```
+
+# See Also
+
+* [The Official Rust API Guidelines](https://rust-lang-nursery.github.io/api-guidelines/about.html)
+* [Elegant Rust APIs](https://deterministic.space/elegant-apis-in-rust.html)
+* [Herman Radtke on Cow](https://hermanradtke.com/2015/05/29/creating-a-rust-function-that-returns-string-or-str.html)
+* [Combining Into and Cow](https://jwilm.io/blog/from-str-to-cow/)
+
