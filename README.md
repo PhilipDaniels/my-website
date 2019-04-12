@@ -2,6 +2,13 @@
 
 Sources for my (mainly) Hugo-based website.
 
+# Rust posts
+* Logging setup
+* Iterate, don't mutate - patterns for fixing
+* Porting C code base
+
+
+
 # TODO
 * [ ] RSS
 * [ ] Get mdbook 'Run Rust' working
