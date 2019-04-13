@@ -6,8 +6,7 @@ Sources for my (mainly) Hugo-based website.
 * Logging setup
 * Iterate, don't mutate - patterns for fixing
 * Porting C code base
-
-
+* Ergonomic hashmap keys - implementing Borrow. Use my FileInfo struct as an example
 
 # TODO
 * [ ] RSS
