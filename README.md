@@ -7,6 +7,12 @@ Sources for my (mainly) Hugo-based website.
 * Iterate, don't mutate - patterns for fixing
 * Porting C code base
 * Ergonomic hashmap keys - implementing Borrow. Use my FileInfo struct as an example
+* Cargo tools
+* VSCode extensions
+* Case-insensitive HashMaps and string comparisons
+* Getting a mutable reference to something in a deep structure
+* Using ripgrep
+
 
 # TODO
 * [ ] RSS
