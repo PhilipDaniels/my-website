@@ -1,29 +1,28 @@
 # my-website
 
-
-
-
 Sources for my (mainly) Hugo-based website.
 
 # Rust posts
-* Logging setup
-* Iterate, don't mutate - patterns for fixing
-* Porting C code base
+* Structuring Rust Programs
+  - Iterate, don't mutate - patterns for fixing
+  - Getting a mutable reference to something in a deep structure
+  - ER modelling as inspiration, but trees not graphs
+
 * Ergonomic hashmap keys - implementing Borrow. Use my FileInfo struct as an example
+* Rustfmt
+  - disable_all_formatting = true (from ripgrep)
 * Cargo tools
-  cargo install --force --path .
+  - cargo install --force --path .
+
+* Porting C code base
 * Case-insensitive HashMaps and string comparisons
-* Getting a mutable reference to something in a deep structure
+* Logging setup
+
 * REST API URL forms
 * Cheatsheet for find
 * Cheatsheet for bash
 * Cheatsheet for PowerShell
-* Release mode builds
-  RUSTFLAGS="-C target-cpu=native" cargo build --release --features 'simd-accel'
-  [profile.release]
-    debug = 1 (from ripgrep)
-* Rustfmt
-  disable_all_formatting = true (from ripgrep)
+
 
 # TODO
 * [ ] RSS
