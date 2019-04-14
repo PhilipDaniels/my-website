@@ -1,5 +1,8 @@
 # my-website
 
+
+
+
 Sources for my (mainly) Hugo-based website.
 
 # Rust posts
@@ -8,11 +11,19 @@ Sources for my (mainly) Hugo-based website.
 * Porting C code base
 * Ergonomic hashmap keys - implementing Borrow. Use my FileInfo struct as an example
 * Cargo tools
-* VSCode extensions
+  cargo install --force --path .
 * Case-insensitive HashMaps and string comparisons
 * Getting a mutable reference to something in a deep structure
-* Using ripgrep
-
+* REST API URL forms
+* Cheatsheet for find
+* Cheatsheet for bash
+* Cheatsheet for PowerShell
+* Release mode builds
+  RUSTFLAGS="-C target-cpu=native" cargo build --release --features 'simd-accel'
+  [profile.release]
+    debug = 1 (from ripgrep)
+* Rustfmt
+  disable_all_formatting = true (from ripgrep)
 
 # TODO
 * [ ] RSS
