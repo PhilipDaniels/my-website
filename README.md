@@ -2,7 +2,15 @@
 
 Sources for my (mainly) Hugo-based website.
 
+# Rust posts - next
+
+* Logging setup
+* Serialization results - JSON/TOML equivalence
+* How to set RUST_BACKTRACE in Linux and Windows (see Release builds post)
+* Ownership model
+
 # Rust posts
+* Builder pattern
 * Ergonomic hashmap keys - implementing Borrow. Use my FileInfo struct as an example
 * Rustfmt
   - disable_all_formatting = true (from ripgrep)
@@ -13,9 +21,7 @@ Sources for my (mainly) Hugo-based website.
   - documentation generation (p181)
 * Porting C code base
 * Case-insensitive HashMaps and string comparisons
-* Logging setup
 * Combinator APIs for Option and Result (F# railway programming?)
-* How to set RUST_BACKTRACE in Linux and Windows (see Release builds post)
 * Modules
   - pub use x::y::z; use brings into scope in this module, and pub makes it visible outside
     preludes are written like this
