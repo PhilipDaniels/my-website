@@ -2,7 +2,7 @@
 title: "Porting Elite to Rust, Part 1"
 date: "2019-06-02"
 draft: true
-tags: [rust, elite, gaming]
+tags: [rust, elite, gaming, quicksilver, webasm]
 ---
 
 # Background
@@ -161,9 +161,8 @@ The canvas doesn't fit the window, but I am willing to live with that for now.
 Anything that works in the web I consider a bonus, but I am not going to let it
 stop me from porting the game for the desktop.
 
-If you want to play along, this is at
-[Commit 015a01c47](https://github.com/PhilipDaniels/eliter/commit/015a01c473796e2f2f2f19ba02b30b97e9db6529)
-.
+The code when this blog point was written is at tag 'p1', commit
+[015a01c47](https://github.com/PhilipDaniels/eliter/commit/015a01c473796e2f2f2f19ba02b30b97e9db6529).
 
 # Links
 
