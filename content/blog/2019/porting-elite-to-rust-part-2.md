@@ -11,7 +11,7 @@ It seemed that the next milestone ought to be to display a ship and run the firs
 screen.
 
 Alas, this is where the idea of porting things gradually falls down a bit - displaying a ship
-involves standing up pretty much the entire 3D system of Elite: The New Kind as well as the
+involves standing up pretty much the entire 3D system of **Elite: The New Kind** as well as the
 configuration system and deciding how to map some important C constructs such as the many
 `#define` constants and module-level data that is associated with a particular function.
 
