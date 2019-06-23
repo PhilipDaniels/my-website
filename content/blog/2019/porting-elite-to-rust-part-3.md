@@ -130,7 +130,8 @@ using Rodio directly. Interestingly, if you delve into
 [Quicksilver's asset module](https://github.com/ryanisaacg/quicksilver/blob/master/src/lifecycle/asset.rs)
 you can see it also maintains an internal 'loading' state.
 
-And that is [p4 - commit ]() - the ship parade is working. A small flaw does show up -
+And that is
+[p4 - commit ca7fbaed80c](https://github.com/PhilipDaniels/eliter/commit/ca7fbaed80c35a6a3c869cddb4b1a3f1aa3d3da9) - the ship parade is working. A small flaw does show up -
 if you maximize the window you can see that the corners of the triangles do not always
 meet up quite where they should be. I think this is due to the inaccuracies in the 3D
 calculations due to the use of integer arithmetic in some places. Converting the whole
