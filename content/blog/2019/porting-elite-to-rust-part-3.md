@@ -61,7 +61,7 @@ If I change the `-z` to `z` then *different* polygons flash into and out of exis
 Still, it looks basically right, I'm going to put off solving that for later. I want to see
 all the ships first!
 
-# Update: WASM no longer works
+# WASM no longer works
 
 Unfortunately the code at the `p3` tag has a problem, which I only discovered later: it no
 longer works in the browser. The culprit is this piece of code in `main.rs` which is designed
@@ -95,36 +95,45 @@ probably find that the animation is jerky. It turns out this is just debug mode 
 and if you do a release mode build with `cargo web start --release` the animation is as
 smooth as the desktop. The compilation speed will make you want to buy a new computer though!
 
+# Intro2 solves the flashing
 
+Once I had the intro2 screen basically working I figured out the problem with the
+polygons flashing into and out of existence - this only happened on ships with lines
+as well as faces. Adding another `window.flush()` to `gfx_draw_colour_line` eliminated
+the problem.
 
+# Add stars and music
 
+Next up I ported the star fields, from `stars.c`. The code that moves the stars was
+fairly easy to port, but actually drawing them threw up another conundrum. In Allegro,
+individual pixels are
+plotted, but Quicksilver has no concept of drawing just a pixel, so for now I am
+just drawing very small filled circles. This gives a nice star-like effect, but is rather
+inefficient because Quicksilver converts the circles to many triangles before sending
+them to the GPU.
 
-## Heading 2
-### Heading 3
-#### Heading 4
-##### Heading 5
+Music was a bigger problem. There are two music assets, the 'Elite Theme' for the first
+intro screen, and 'The Blue Danube' for the second intro screen. Starting them playing
+is not a problem but there is no way to stop them! You can't even set their volume to
+0 once they start playing. Looking at the Quicksilver
+[sound module](https://github.com/ryanisaacg/quicksilver/blob/master/src/sound.rs)
+and comparing it to the
+[Rodio library](https://docs.rs/rodio/0.9.0/rodio/struct.Sink.html)
+which actually handles the sounds and you can see that Quicksilver is very limited.
+Basically, you can only use Quicksilver for beeps and warbles at the moment. I also found
+the asset system annoying: there is no way of checking to see if an asset has finished
+loading, or if a sound is currently playing - you have to maintain your own flag.
 
-Start your engines...
+Quicksilver's sound support is very much minimal-viable-product at the moment.
+To fix the sound issues I'm considering just ignoring Quicksilver's sound support and
+using Rodio directly. Interestingly, if you delve into
+[Quicksilver's asset module](https://github.com/ryanisaacg/quicksilver/blob/master/src/lifecycle/asset.rs)
+you can see it also maintains an internal 'loading' state.
 
-*This is italic* and **this is bold**, ***this is bold-italic*** and ~~this is strikethrough~~.
-
-[A link](https://www.x.com)
-
-![An image for this post](image1.png)
-
-[Link to another post in this year]({{< ref "other-post.md" >}})
-[Link to another post in another year]({{< ref "../2017/"other-post.md" >}})
-[Link to a heading]({{< relref "#my-normalized-heading" >}}).
-
-> This is a quote
-
-Use 4 spaces to create pre-formatted text:
-
-    $ some example text for example with <b> tags
-
-A list is created using asterisks or dashes
-
-* First
-* Second
-* Third
-
+And that is [p4 - commit ]() - the ship parade is working. A small flaw does show up -
+if you maximize the window you can see that the corners of the triangles do not always
+meet up quite where they should be. I think this is due to the inaccuracies in the 3D
+calculations due to the use of integer arithmetic in some places. Converting the whole
+thing to use `f32` I suspect will fix it so again, this is something to not worry about
+at the moment, it can be done later. And I still need to figure out why the ships are
+slightly offset. Not to mention the stars.

@@ -161,6 +161,13 @@ The canvas doesn't fit the window, but I am willing to live with that for now.
 Anything that works in the web I consider a bonus, but I am not going to let it
 stop me from porting the game for the desktop.
 
+I did encounter a minor issue when using `cargo web`, in that I got thousands of
+errors about 'sandybridge' is not a recognized processor for this target (ignoring processor)'.
+I raised an [issue]() in the cargo web repository about this, but I later discovered it
+was my own fault: I had previously added `export RUSTFLAGS="-C target-cpu=native"` to
+my .bashrc. Removing that eliminated the warnings.
+
+
 The code when this blog point was written is at tag 'p1', commit
 [015a01c47](https://github.com/PhilipDaniels/eliter/commit/015a01c473796e2f2f2f19ba02b30b97e9db6529).
 
