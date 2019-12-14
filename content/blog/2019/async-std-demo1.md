@@ -169,6 +169,10 @@ want to run `N`. The easiest way to do this seems to be to use the
 [FuturesUnordered](https://docs.rs/futures/0.3.1/futures/stream/futures_unordered/struct.FuturesUnordered.html)
 collection type from the `futures` crate.
 
+> Update 14 Dec 2019: Actually, an easier way is to spawn individual
+> tasks, a technique that also means we benefit from running on all
+> available cores. See Step 7 of this post.
+
 Let's add a new function:
 
 ```rs
@@ -470,6 +474,56 @@ The program finishes a lot faster compared to making the requests in series.
 And that's it! I hope this proves useful to others; comments and improvements
 are welcome.
 
+# Step 7
+
+A couple of weeks after writing the first version of this post I figured out a way
+to run multiple futures on multiple cores. We don't need `FuturesUnordered`, we can
+just spawn as many tasks as we need then wait for them all to complete. `async-std's`
+executor will distribute the tasks across all available cores. Here is a simple
+example, based on downloading URLs again:
+
+```rs
+fn demo_downloading_urls_on_multiple_threads() {
+    let mut tasks = Vec::with_capacity(URLS.len());
+
+    for url in URLS.iter() {
+        let url = url.to_string();
+        tasks.push(task::spawn(async move {
+            match download_url(&url).await {
+                Ok(body) => { // Possibly do something useful with the body of the request here.
+                },
+                Err(e) => println!("    Got error {:?}", e),
+            }
+        }))
+    }
+
+    task::block_on(async {
+        for t in tasks {
+            t.await;
+        }
+    });
+}
+```
+
+When we run this program we get something like this (note the different ThreadIds):
+
+```
+Downloading https://www.sharecast.com/equity/Anglo_American on thread ThreadId(9)
+Downloading https://www.sharecast.com/equity/Associated_British_Foods on thread ThreadId(4)
+Downloading https://www.sharecast.com/equity/Admiral_Group on thread ThreadId(7)
+Downloading https://www.sharecast.com/equity/Ashtead_Group on thread ThreadId(5)
+Downloading https://www.sharecast.com/equity/Aviva on thread ThreadId(6)
+Downloading https://www.sharecast.com/equity/BAE_Systems on thread ThreadId(2)
+Downloading https://www.sharecast.com/equity/Barratt_Developments on thread ThreadId(3)
+Downloading https://www.sharecast.com/equity/Aggreko on thread ThreadId(8)
+Downloading https://www.sharecast.com/equity/Babcock_International_Group on thread ThreadId(2)
+Downloading https://www.sharecast.com/equity/BP on thread ThreadId(4)
+...
+```
+
+The total execution time is similar to the single-threaded version, but that's only
+because we don't have a lot of work to do. In a heavily loaded server this technique
+is obviously preferable.
 
 ### Gotchas
 
