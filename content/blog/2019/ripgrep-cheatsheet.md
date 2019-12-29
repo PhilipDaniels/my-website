@@ -16,7 +16,7 @@ tags: [unix, ripgrep]
 | `rg --no-filename NEEDLE` | Don't print filenames, handy when you care about the match more than the file
 | `rg -v NEEDLE` | Invert matching: show lines that do not match
 | `rg NEEDLE README.md` | Search only in specified file(s)
-| <code>rg -c &minus;&minus;sort path&#124;modified&#124;accessed&#124;created NEEDLE<code> | Sort the results (`-sortr` to reverse)
+| <code>rg -c &hyphen;&hyphen;sort path&#124;modified&#124;accessed&#124;created NEEDLE<code> | Sort the results (`-sortr` to reverse)
 | `rg -g '*.nuspec' NEEDLE` | Only search in `*.nuspec` files (can use multiple `-g`)
 | `rg -g '!*.nuspec' NEEDLE` | Search in everything but `*.nuspec` files
 | <code>rg -p NEEDLE &#124; less -R</code> | Force pretty printed output even in pipes
