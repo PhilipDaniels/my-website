@@ -61,6 +61,30 @@ Alternatively you can set RUSTFLAGS in `.cargo/config`, see below for an example
 
 [Speed vs size](https://rust-embedded.github.io/book/unsorted/speed-vs-size.html)
 
+# Getting better performance from Development mode builds
+
+There is a neat trick you can use to get Cargo make your Development mode
+builds run faster, potentially giving you faster run times while keeping
+compilation times reasonable. If you add the following to your `Cargo.toml`,
+it will make Cargo *compile all your crate dependencies with full optimisations*
+(like in Release mode) but
+compile your own code with fewer optimisations (like in Development mode).
+Best of both worlds? Maybe.
+As the [Cargo profiles](https://doc.rust-lang.org/cargo/reference/profiles.html#overrides-and-generics) page shows, if you make heavy use of generics from 3rd party crates then you
+won't get the full benefit, but in most cases I would not be surprised if
+90% of the Rust code in your program is actually from crates. It certainly
+worked fantastically well on a game I was writing.
+
+```toml
+# Set the default for dependencies.
+[profile.dev.package."*"]
+opt-level = 3
+
+[profile.dev]
+# Turn on a small amount of optimisation in development mode.
+opt-level = 1
+```
+
 # Creating a config file for Cargo
 
 You can create a `config` file for Cargo to specify defaults for these settings.
