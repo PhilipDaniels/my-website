@@ -146,7 +146,7 @@ here:
 ```rs
 /// Creates a new job engine that is running and ready to process jobs.
 pub fn new(dest_dir: ShadowCopyDestination) -> Self {
-    let me = Self {
+    let this = Self {
         dest_dir,
         pending_jobs: Default::default(),
         completed_jobs: Default::default(),
@@ -160,30 +160,31 @@ pub fn new(dest_dir: ShadowCopyDestination) -> Self {
 
     // Create the JOB_EXECUTOR thread.
     let builder = thread::Builder::new().name("JOB_EXECUTOR".into());
-    let this = me.clone();
+
     builder
-        .spawn(move || {
-            this.run_job_executor_thread(job_exec_internal_receiver, job_exec_internal_sender);
+        .spawn({
+            let this = this.clone();
+            move || this.run_job_executor_thread(job_exec_internal_receiver, job_exec_internal_sender)
         })
         .expect("Cannot create JOB_EXECUTOR thread");
 
     // Create the JOB_STARTER thread.
     let builder = thread::Builder::new().name("JOB_STARTER".into());
-    let this = me.clone();
     builder
-        .spawn(move || {
-            this.run_job_starter_thread(job_exec_sender);
+        .spawn({
+            let this = this.clone();
+            move || this.run_job_starter_thread(job_exec_sender)
         })
         .expect("Cannot create JOB_STARTER thread");
 
     // Create the JOB_COMPLETED thread.
     let builder = thread::Builder::new().name("JOB_COMPLETED".into());
-    let this = me.clone();
-    builder.spawn(move || {
-        this.run_job_completed_thread(job_exec_receiver);
+    builder.spawn({
+        let this = this.clone();
+        move || this.run_job_completed_thread(job_exec_receiver)
     }).expect("Cannot create JOB_COMPLETED thread");
 
-    me
+    this
 }
 ```
 
@@ -192,11 +193,14 @@ and the reduced number of functions and vastly reduced number of `clones`.
 And the ability to have my worker threads execute methods on my struct fits better
 with my mental model of the job engine. I don't like massive inline closures.
 
-Apart from the horrifying synonymity of `Self`, `this`, `me`<sup>*</sup> I was
-really pleased with how this turned out. It's always satisfying when you discover a
-relatively simple refactoring that allows you to bring a codebase that was getting out
+Note how the `spawn` methods use a 'closure returning block' - this allows the
+cloning of `this` to be done in a more limited scope than doing it before the call
+to `spawn`. (Credit to [/u/matklad](https://www.reddit.com/user/matklad) for this nice little hack.)
+
+I was really pleased with how this turned out. It's always satisfying when you discover
+a relatively simple refactoring that allows you to bring a codebase that was getting out
 of control back into line.
 
 (*) `self` is a reserved word, so although it looks like you could unambiguously
-use a variable called `self` in the `new` function instead of `me`, it turns out
+use a variable called `self` in the `new` function instead of `this`, it turns out
 to be forbidden - I guess it keeps the compiler writers' lives simple(ish).
