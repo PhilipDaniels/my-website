@@ -145,7 +145,7 @@ let s: SolutionDirectory = "somepath".into();
 * The above traits must not fail. Coming soon are
   [TryFrom](https://doc.rust-lang.org/std/convert/trait.TryFrom.html)
   and
-  [TryInfo](https://doc.rust-lang.org/std/convert/trait.TryInto.html).
+  [TryInto](https://doc.rust-lang.org/std/convert/trait.TryInto.html).
 
 
 
