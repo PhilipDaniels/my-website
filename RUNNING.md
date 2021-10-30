@@ -15,3 +15,6 @@ You must fetch this before beginning work
 
 Once you have done that, use the `publish` script to build the website into the `public`
 folder and push all the files to **both** git repos.
+
+n.b. When I first did this I got into a detached HEAD state in the public folder.
+A manual push of HEAD onto the master branch fixed it.
