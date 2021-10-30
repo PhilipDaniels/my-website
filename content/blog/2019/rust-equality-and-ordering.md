@@ -202,7 +202,7 @@ member of your value (in entity-relationship terms, if we have a compound primar
 following pattern works:
 
 ```rs
-impl PartialEq for ExtenededFileInfo {
+impl PartialEq for ExtendedFileInfo {
     fn eq(&self, other: &Self) -> bool {
         // Equal if all key members are equal
         self.path == other.path &&
