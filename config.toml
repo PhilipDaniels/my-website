@@ -4,7 +4,7 @@ baseURL = "https://www.philipdaniels.com/"
 languageCode = "en-us"
 title = "Phil's Blog"
 theme = "hyde-hyde-pd"
-googleAnalytics = "UA-51573023-1"
+googleAnalytics = "G-QK1BLJ71TN"
 disqusShortname = "philipdanielscomblog"
 enableRobotsTXT = true
 

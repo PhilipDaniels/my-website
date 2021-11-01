@@ -30,6 +30,6 @@
 
     {{ partial "header/feeds.html" . }}
     {{ if not (in (.Site.BaseURL | string) "localhost") }}
-        {{ template "_internal/google_analytics.html" . }}
+        {{ partial "google_analytics.html" . }}
     {{ end }}
 </head>
