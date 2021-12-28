@@ -4,8 +4,8 @@ Sources for my (mainly) Hugo-based website.
 
 # Rust posts - next
 
+* Rayon patterns
 * Logging setup
-* Serialization results - JSON/TOML equivalence
 * How to set RUST_BACKTRACE in Linux and Windows (see Release builds post)
 * Ownership model
 
