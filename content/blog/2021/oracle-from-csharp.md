@@ -41,13 +41,16 @@ I have packaged up my lessons learned in a new NuGet package,
 [BassUtils.Oracle](https://www.nuget.org/packages/BassUtils.Oracle) which contains
 many helper methods for creating `OracleParameters` in the correct way - this is about 80%
 of the battle. The remainder is knowing what you can and can't do in PL/SQL and which is
-compatible with calling it from C#.
+compatible with calling it from C#, and I have documented what I have learnt so far in
+the comments.
 
 The package has a README, but I recommend cloning the
 [GitHub Repository](https://www.github.com/PhilipDaniels/BassUtils)
 and walking through the `BassUtils.OracleExamples` project which shows how to use all 3
 of the above techniques against a demo Oracle database - a SQL script to create the
 database is included.
+
+![The OracleExamples App](oracle_examples.png)
 
 Hopefully these examples will help others avoid some of the torture I have experienced
 over the last few weeks :-).
@@ -167,3 +170,7 @@ heard of POCO) but I hope to write another NuGet package soon which will generat
 Like most things, it's easy once you know how - and have captured that knowledge in a package
 that simplifies the task. It's probable that there are more techniques and helpers which could
 be added to `BassUtils.Oracle` - I would welcome pull requests.
+
+![I Know Oracle](know_oracle.jpg)
+
+Well, a bit at least!
