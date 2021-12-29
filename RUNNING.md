@@ -21,6 +21,6 @@ A manual push of HEAD onto the master branch fixed it.
 
 To run the website locally, do
 
-	$ hugo serve -w -D
+	$ hugo serve -wD
 
 -D means build draft posts as well.
