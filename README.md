@@ -2,60 +2,6 @@
 
 Sources for my (mainly) Hugo-based website.
 
-# Rust posts - next
-
-* Rayon patterns
-* Logging setup
-* How to set RUST_BACKTRACE in Linux and Windows (see Release builds post)
-* Ownership model
-
-# Rust posts
-* Builder pattern
-* Ergonomic hashmap keys - implementing Borrow. Use my FileInfo struct as an example
-* Rustfmt
-  - disable_all_formatting = true (from ripgrep)
-* Cargo tools
-  - cargo install --force --path .
-* Cargo tips and tricks
-  - bin programs (p174)
-  - documentation generation (p181)
-* Porting C code base
-* Case-insensitive HashMaps and string comparisons
-* Combinator APIs for Option and Result (F# railway programming?)
-* Modules
-  - pub use x::y::z; use brings into scope in this module, and pub makes it visible outside
-    preludes are written like this
-  - what do all the pub(xxx) things mean
-* New types
-* Enums - using strum and smart_default
-* More Unicode - including crow's foot symbols, links to Wikipedia pages
-* LINQ to Rust - Port content from 'rsforcs' and delete that repo
-* All about comments
-    - Doc comments, module level comments
-* Various other C# techniques
-    - embedded resources
-    - extension methods (can also do static extensions with traits in Rust)
-    - null, nullable types
-    - conditional compilation
-    - dates and times
-    - XML
-    - Files, Paths and IO (Stream)
-    - Serialization, esp. JSON
-    - the major collections (List->Vec, Dictionary->HashMap, HashSet)
-    - starting processes
-    - command line arguments
-    - text files
-    - Strings, formatting and parsing cheatsheet
-    - Common NuGet packages vs Common Crates
-    - Testing
-    - Console IO
-
-# Other posts
-* REST API URL forms
-* Cheatsheet for find
-* Cheatsheet for bash
-* Cheatsheet for PowerShell
-
 
 # TODO
 * [ ] RSS
