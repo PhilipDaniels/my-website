@@ -16,13 +16,13 @@ I have been looking at doing bulk-loads of classes, in other words, how to get m
 records of data into and out of Oracle ergonomically. I didn't want to use bulk-insert 
 techniques because I wanted to avoid creating lots of staging tables. Instead I just wanted to
 pass a set of records into a stored procedure. My investigations were not helped by the
-fact that there are multiple ways of doing things in Oracle, and it is quite possible to
-create stored procedures and data types in the Oracle server that you can't call via the
-Oracle C# client library.
+fact that there are multiple, very similar, ways of doing things in Oracle, and it is quite
+possible to create stored procedures and data types in the Oracle server that you can't call
+via the Oracle C# client library.
 
 After much teeth gnashing, I have finally arrived at a set of techniques which allows me
 to pass a table of structured data to an Oracle stored procedure as a single parameter or get
-such a table back out again - in MS SQL servers terms, it's a Table Valued Parameter. This
+such a table back out again - in MS SQL server terms, it's a Table Valued Parameter. This
 involves using
 [Oracle User-Defined Data Types](https://docs.oracle.com/en/database/oracle/oracle-data-access-components/19.3.2/odpnt/featUDTs.html#GUID-7913CDD0-CB22-4257-828F-FBCCA3FE9126).
 
