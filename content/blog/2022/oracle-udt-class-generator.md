@@ -1,6 +1,6 @@
 ---
 title: "A C# Source Generator for Oracle UDTs"
-date: "2022-01-02"
+date: "2022-01-12"
 draft: false
 tags: [C#, Oracle, UDT, SQL, Generator, Sprache, Parsing, DSL, Roslyn]
 ---
@@ -28,7 +28,8 @@ there's not actually a lot of information required. It's possible to capture it 
 in a significantly shorter form, an example of which is:
 
 ```
-class PersonRecord MYSCHEMA.objPerson MYSCHEMA.tblPerson
+class PersonRecord MYSCHEMA.objPerson
+    Collection PersonArray MYSCHEMA.tblPerson
     Namespace People
     Fields [
         int Age,
@@ -39,7 +40,7 @@ class PersonRecord MYSCHEMA.objPerson MYSCHEMA.tblPerson
 
 To go from this to a C# class the steps are
 
-1. Parse this text into a C# class.
+1. Parse this text into a specification, held in a C# class.
 2. Use the specs to generate C# source code using a
 [Source Generator](https://devblogs.microsoft.com/dotnet/introducing-c-source-generators/)
 3. Package the source generator as a NuGet package.
@@ -47,7 +48,7 @@ To go from this to a C# class the steps are
 This post describes how I performed each of these steps. If you find yourself
 wanting to generate a DSL-based Source Generator you can use this as a template.
 The finished generator is availble on NuGet as
-[OracleUdtClassGenerator]()
+[OracleUdtClassGenerator](https://www.nuget.org/packages/OracleUdtClassGenerator/)
 and the source code is
 [available on GitHub](https://github.com/PhilipDaniels/OracleUdtClassGenerator).
 A list of current [C# Source Generators](https://github.com/amis92/csharp-source-generators)
@@ -91,44 +92,76 @@ The grammer for my DSL is specified as a series of parsers using LINQ expression
 probably figure out what is happening just by looking at the code (`TargetClassSpecification` is
 the DTO that contains all the parsed information):
 
-```cs
+```csharp
 static readonly Parser<TargetClassSpecification> TargetClassSpecificationParser =
-    from _ in Parse.String("class").TokenOnLine().Text()
-    from className in Parse.Identifier(Parse.Letter, TokenChar).TokenOnLine().Text()
-    from recordTypeName in Parse.Identifier(Parse.Letter, TokenChar).TokenOnLine().Text()
-    from collectionTypeName in Parse.Identifier(Parse.Letter, TokenChar).TokenOnLine().Text().Optional()
+    from classNames in ClassNameParser
+    from collectionNames in CollectionNameParser.Optional()
     from namespaceName in NamespaceParser.Optional()
+    from filename in FilenameParser.Optional()
     from ddspec in DebugParser.Optional()
     from tsspec in ToStringParser.Optional()
     from fields in FieldListParser
     select new TargetClassSpecification
     {
+        FileName = filename.GetOrDefault(),
         Namespace = namespaceName.GetOrDefault(),
-        ClassName = className,
-        OracleRecordTypeName = recordTypeName,
-        OracleCollectionTypeName = collectionTypeName.GetOrDefault(),
+        ClassName = classNames.Item1,
+        CollectionName = collectionNames.IsDefined ? collectionNames.Get().Item1 : null,
+        OracleRecordTypeName = classNames.Item2,
+        OracleCollectionTypeName = collectionNames.IsDefined ? collectionNames.Get().Item2 : null,
         DebuggerDisplayFormat = ddspec.GetOrDefault(),
         ToStringFormat = tsspec.GetOrDefault(),
         Fields = fields
     };
-
 ```
 
-`from _ in Parse.String("class").TokenOnLine().Text()` means "look for the word 'class' then throw it away".
-`TokenOnLine()` eats whitespace around tokens but doesn't consume newlines. (I had to write this specially
-because I used newline as a separator rather than requiring a comma. This was probably a mistake, I should
-have used comma and the built-in `Token` parser which **does** eat newlines). `Text` turns a list of parsed
-chars into a string.
+This declares one parser, which is composed from a sequence of sub-parsers such as `ClassNameParser` and
+`CollectionNameParser` (which is optional). If the entire parse succeeds then a new `TargetClassSpecification`
+object is created. At this level, most of the interesting code is tucked away in the sub-parsers, most of which
+return single strings, but `ClassNameParser`and `CollectionNameParser` return tuples consisting of two strings.
+I really admire the way that Sprache leverages LINQ to express sequencing.
 
-Then we extract the `className` ('PersonRecord') via the `Parse.Identififer` parser which looks for a starting
-character then a sequence of `TokenChars`.  We then consume the `recordTypeName`, e.g.
-`MYSCHEMA.objPerson` using the same technique. After that we attempt to consume the `collectionTypeName`
-but notice the `Optional()` call - this combinator shows how easy it is to make something optional.
-There are then individual parsers for the namespace, debug display attribute, and `ToString()` method
-which are all optional. Finally `FieldListParser` returns a list of `FieldSpecification` DTOs.
+If we dig into `ClassNameParser` we can see some of the lower-level techniques.
+
+```csharp
+static readonly Parser<(string, string)> ClassNameParser =
+    from _ in Parse.IgnoreCase("CLASS").TokenOnLine()
+    from csharpClassName in Parse.Identifier(Parse.Letter, TokenChar).TokenOnLine().Text()
+    from oracleObjectTypeName in Parse.Identifier(Parse.Letter, TokenChar).TokenOnLine().Text()
+    from _2 in OptionalCommaParser
+    select (csharpClassName, oracleObjectTypeName);
+```
+
+This is designed to parse the first line of this text:
+
+```text
+class PersonRecord MYSCHEMA.objPerson
+    Collection PersonArray MYSCHEMA.tblPerson
+    ...
+```
+
+First we look for the word "CLASS" to start off the entire specification. We use `Parse.IgnoreCase` in preference
+to `Parse.String` here so the user can write in any case they want. `TokenOnLine()` eats whitespace around
+tokens but doesn't consume newlines. (I had to write this specially because I used newline as a separator rather
+than requiring a comma. This was probably a mistake, I should have used comma and the built-in `Token` parser
+which **does** eat newlines). `Text()` turns a list of parsed chars into a string. Finally, if the parse succeeds
+the `from _` means "I don't care what you parsed, throw it away". Since the word "class" is just a keyword and
+carries no information we need we can just dispose of it.
+
+We **do** want to get the C# class name and the Oracle Object Type Name because we need them both for
+the code generation step. All my sub-parsers leverage the `Parse.Identifier(first_char, subsequent_chars)`
+built-in parser. I've configured `TokenChar` so that this accepts letters, numbers, and dots, so that it can parse
+"MYSCHEMA.objPerson" as well as "Person.g.cs" and "PersonRecord".
+
+`OptionalCommaParser` is a 'tidy-up' operation. It greedily consumes input consisting of either a comma or
+whitespace and then stops. This means that the *overall* parser will be in a position to start the next parser, in
+this case we will be at the 'C' in "Collection".
+
+The other individual parsers for the namespace, debug display attribute etc. are all similar, and all optional.
+
+Finally `FieldListParser` returns a list of `FieldSpecification` DTOs.
 Notice how sequencing is handled simply by adding a new LINQ `from` expression. It's very easy to build
 up from simple parsers to the final one.
-
 
 The `TargetClassSpecificationParser` isn't actually the final word: the parsing is done by
 this higher-level parser:
@@ -140,12 +173,12 @@ static readonly Parser<List<TargetClassSpecification>> TargetClassSpecificationL
 ```
 
 This really demonstrates the power of the combinator approach with the `.Many()` call being all that
-is required to say 'parse a list of these things from the input' rather than just one.
+is required to say "parse a list of these things from the input" rather than just one.
 
 
 ### Drill-down into FieldListParser
 
-`FieldListParser` shows a couple of interesting techniques. The high-level parsers are defined as:
+`FieldListParser` shows a couple of interesting techniques. It is defined as:
 
 ```cs
 static readonly Parser<List<FieldSpecification>> FieldListParser =
@@ -208,13 +241,17 @@ static readonly Parser<FieldSpecification> TwoPartFieldParser =
     };
 ```
 
+> An alternative implementation could use a single FieldParser which gathers 1, 2 or 3
+> strings and then assigns them to the appropriate properties of the `FieldSpecification`
+> depending on how many strings were present.
+
 You can see the whole set of parsers at the Github repository but that's the main ones.
 The stepwise refinement continues down to lower and lower levels until you reach parsers
 for individual words and characters.
 
 The top-level method that drives the parsing is defined like this:
 
-```cs
+```csharp
 public static List<TargetClassSpecification> ParseTargetSpecs(string input)
 {
     input = input.Trim();
@@ -235,7 +272,7 @@ A generator is quite easy to write - but debugging it is a different matter, mor
 that later. To start, you have to implement the
 [ISourceGenerator interface](https://docs.microsoft.com/en-us/dotnet/api/microsoft.codeanalysis.isourcegenerator?view=roslyn-dotnet-4.0.1). Create a class like this
 
-```cs
+```csharp
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.Text;
 
@@ -264,7 +301,7 @@ So all we need to do during generation is find all these files, extract the text
 and use the parsed specifications to generate C#:
 
 
-```cs
+```csharp
 public void Execute(GeneratorExecutionContext context)
 {
     try
@@ -328,9 +365,9 @@ will drive the C# source code generation in `CreateSourceFile`.
 
 A note on the logging and exception trapping in these methods. During development debugging
 source generators is something of a pain. You can attach a debugger to the running generator
-using
+using:
 
-```cs
+```csharp
 if (!Debugger.IsAttached)
 {
     Debugger.Launch();
@@ -351,13 +388,13 @@ DateTime.UtcNow: 2022-01-01T22:33:03.5397481Z
 
 Found file C:\repos\OracleUdtClassGenerator\OracleUdtClassGenerator.ConsoleTestHarness\ArticleMaster.oraudt
   Found spec for ArticleMasterRecord with 17 fields
-  Generated file ArticleMasterRecord.g.cs in namespace OracleUdtClassGenerator.ConsoleTestHarness.OracleUdts
+  Generated file ArticleMasterRecord.g.cs in namespace OracleUdtClassGenerator.ConsoleTestHarness
 Found file C:\repos\OracleUdtClassGenerator\OracleUdtClassGenerator.ConsoleTestHarness\MyClass.oraudt
   Found spec for MyClass with 5 fields
   Generated file MyClass.g.cs in namespace MyNamespace
 Found file C:\repos\OracleUdtClassGenerator\OracleUdtClassGenerator.ConsoleTestHarness\SubFolder\ArticleMaster2.oraudt
   Found spec for ArticleMasterRecord2 with 17 fields
-  Generated file ArticleMasterRecord2.g.cs in namespace OracleUdtClassGenerator.ConsoleTestHarness.SubFolder.OracleUdts
+  Generated file ArticleMasterRecord2.g.cs in namespace OracleUdtClassGenerator.ConsoleTestHarness.SubFolder
 Found file C:\repos\OracleUdtClassGenerator\OracleUdtClassGenerator.ConsoleTestHarness\Person.oraudt
   Found spec for PersonRecord with 3 fields
   Generated file PersonRecord.g.cs in namespace People
@@ -413,8 +450,9 @@ using (sb.BeginCodeBlock())
 ```
 
 This class lives in my [BassUtils](https://www.nuget.org/packages/BassUtils/) NuGet package, but I
-copied and pasted it into the generator to avoid having another NuGet dependency to deal with. This
-thinking also meant I decided not to use a templating library to assist with the code generation.
+copied and pasted it into the generator to avoid having another NuGet dependency to deal with (see
+below for the problems they cause). This thinking also meant I decided not to use a templating library
+to assist with the code generation.
 
 
 # Packaging as a NuGet Package
@@ -454,7 +492,7 @@ You can suppress this in the project file:
 
 We have to ensure that the NuGet package includes the dependencies that we used while
 writing it. If we don't do this users of the NuGet will get a runtime error along the lines
-of 'cannot find file or assembly...'. For the OracleUdtClassGenerator, it's just Sprache:
+of 'cannot find file or assembly...'. For our `OracleUdtClassGenerator`, it's just Sprache:
 
 ```xml
 <ItemGroup>
@@ -486,4 +524,3 @@ One last thought: I found it easier to test the generator **as** as a NuGet pack
 within my solution, rather than adding a Project Reference. As we have seen, there
 are significant complexities in creating the NuGet package and using a Project Reference
 doesn't exercise those scenarios at all.
-
