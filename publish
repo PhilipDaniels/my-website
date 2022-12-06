@@ -14,7 +14,7 @@ echo -e "\033[0;32mCleaning out the public folder...\033[0m"
 find public -type f -not -name 'CNAME' -not -name '.git' -delete
 
 echo -e "\033[0;32mBuilding site...\033[0m"
-hugo
+./hugo
 
 # Commit the contents of the public folder in preparation
 # for pushing it to its own remote
