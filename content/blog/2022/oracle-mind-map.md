@@ -333,8 +333,16 @@ END;
 #### Misc Date Tricks
 
 ```sql
--- Truncate to minute resolution.
-SELECT TRUNC(SYSDATE, 'MI') FROM DUAL;
+SELECT
+    SYSDATE,
+    TRUNC(SYSDATE, 'MI') AS beginning_of_current_minute,
+    TRUNC(SYSDATE, 'HH') AS beginning_of_current_hour,
+    TRUNC(SYSDATE, 'DD') AS beginning_of_current_day,
+    TRUNC(SYSDATE, 'IW') AS beginning_of_current_week,
+    TRUNC(SYSDATE, 'MM') AS beginning_of_current_month,
+    TRUNC(SYSDATE, 'Q') AS beginning_of_current_quarter,
+    TRUNC(SYSDATE, 'Y') AS beginning_of_current_year
+FROM DUAL;
 
 -- Generate dates by the minute.
 SELECT
