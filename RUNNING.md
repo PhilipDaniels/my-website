@@ -19,8 +19,5 @@ folder and push all the files to **both** git repos.
 n.b. When I first did this I got into a detached HEAD state in the public folder.
 A manual push of HEAD onto the master branch fixed it.
 
-To run the website locally, do
-
-	$ hugo serve -wD
-
--D means build draft posts as well.
+To run the website locally, just run the 'serve' script. It builds the draft
+pages as well.
