@@ -51,9 +51,9 @@ and going to a local Trek shop and buying a Domane in my size - yes they had sto
 then I read James Huang's [Velo](https://velo.outsideonline.com/ebike/2023-trek-domane-review/)
 of that bike and his criticism of the exposed headset bearings was a bit of a shocker. Given
 that Audax rides in the UK will see their fair share of unavoidable terrible weather conditions
-(24 hours of rain in Wales anyone?) I got cold feet on that too.
-
-
+(24 hours of rain in Wales anyone?) I got cold feet on that too. In the end I concluded
+that Ribble probably sell over 10,000 bikes a year in the UK, so "somebody complaining
+on the internet" is likely and decided to stick it out.
 
 # Arrival Day, Setup and Test Ride
 
