@@ -5,8 +5,15 @@ draft: false
 tags: [cycling, pics]
 ---
 
-# Gadgets
+# e-Niro
 
-**Cateye Velo Wireless**
-![Cateye Velo Wireless](cateye.jpg)
+**Bike in Back**
 
+Easy fit in the boot with the seats down:
+![Full Boot Shot](BikeInCar1.jpg)
+
+Passenger side door shot:
+![Side Shot](BikeInCar2.jpg)
+
+Passenger seat still has room to move forward if needed:
+![Front Seat Forward](BikeInCar3.jpg)
